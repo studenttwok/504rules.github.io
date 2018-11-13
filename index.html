@@ -123,6 +123,8 @@
 				<div class="randomizer"><span class="glyphicon glyphicon-random btn-sm" style="cursor: pointer;" title="randomize"></span></div>
 				<div id="printicon"><span class="glyphicon glyphicon-print btn-sm" style="cursor: pointer;" title="print"></span></div>
 				<div id="menuToggle"><span class="glyphicon glyphicon-menu-hamburger btn-sm" style="cursor: pointer;" title="Menu"></span></div>
+                <!-- Added by studenttwok to change language -->
+                <div id="languageToggle"><span class="glyphicon glyphicon glyphicon-globe btn-sm" style="cursor: pointer;" title="轉到中文版"></span></div>
 			</div>
 
 			<h1>World <span id="worldno" style="cursor:pointer;"><span class="mod{{world.0}}">{{world.0}}</span><span class="mod{{world.1}}">{{world.1}}</span><span class="mod{{world.2}}">{{world.2}}</span></span>
@@ -2103,6 +2105,18 @@
 			$("body").css({ "padding-top": "0px" });
 		}
 	}
+    
+    // Added by studenttwok to change language
+    function toggleLanguage() {
+		var thisLanguage = "eng";
+        if (thisLanguage == "cht") {
+            // check to en
+            window.location.href = "index.html#" + world[0] + world[1] + world[2];
+        } else {
+            // change to cht
+            window.location.href = "index_cht.html#" + world[0] + world[1] + world[2];
+        }
+	}        
 	
 	function load() {
 		
@@ -2151,7 +2165,9 @@
 		$('#menuToggle').on('click', function (e) { toggleMenu(); });
 		$('#printicon').on('click', function (e) { window.print(); });
 		$('div.randomizer').on('click', function (e) { randomizeWorlds(); });
-
+        // Added by studenttwok to change language
+		$('#languageToggle').on('click', function (e) { toggleLanguage(); });
+        
 	}
 	
 	$(function() { 
