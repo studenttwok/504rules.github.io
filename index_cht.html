@@ -1,0 +1,2218 @@
+<html manifest="manifest.appcache">
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content="initial-scale=1,user-scalable=yes">
+	<title>504</title>
+	<script src="js/jquery-1.11.3.min.js"></script>
+	<script src="js/mustache.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="css/bootstrap.css">
+	<link rel="stylesheet" href="css/bootstrap-theme.min.css">
+	<link rel="stylesheet" href="css/main.css" media="all">
+	<link rel="apple-touch-icon" href="img/apple-touch-icon-180x180.png"/>
+	<style type="text/css"></style>
+</head>
+<body>
+<nav class="navbar navbar-default navbar-fixed-top" id="menu">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-8">
+				<div class="panel panel-default">
+					<div class="panel-heading"><strong>請選擇你想要的模組：</strong></div>
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-md-8">
+								<div class="btn-group modules" role="group" aria-label="randomizer">
+									<button class="mod1 btn stateon"><img src="img/modules/icon-mod1.png" alt="物流 (1)" title="物流 (1)" /></button>
+									<button class="mod2 btn stateon"><img src="img/modules/icon-mod2.png" alt="競速 (2)" title="競速 (2)" /></button>
+									<button class="mod3 btn stateon"><img src="img/modules/icon-mod3.png" alt="特權 (3)" title="特權 (3)" /></button>
+									<button class="mod4 btn stateon"><img src="img/modules/icon-mod4.png" alt="軍事 (4)" title="軍事 (4)" /></button>
+									<button class="mod5 btn stateon"><img src="img/modules/icon-mod5.png" alt="探索 (5)" title="探索 (5)" /></button>
+									<button class="mod6 btn stateon"><img src="img/modules/icon-mod6.png" alt="道路 (6)" title="道路 (6)" /></button>
+									<button class="mod7 btn stateon"><img src="img/modules/icon-mod7.png" alt="多數 (7)" title="多數 (7)" /></button>
+									<button class="mod8 btn stateon"><img src="img/modules/icon-mod8.png" alt="生產 (8)" title="生產 (8)" /></button>
+									<button class="mod9 btn stateon"><img src="img/modules/icon-mod9.png" alt="股權 (9)" title="股權 (9)" /></button>
+								</div>
+							</div>
+							<div class="col-md-4 text-center" style="padding-top:0.5em;">
+								<div class="btn-group modules btn-group-lg" role="group" aria-label="randomizer">
+									<button class="btn btn-default" type="button" id="selectnone" title="所有停用"><span class="glyphicon glyphicon-unchecked" style="cursor: pointer;"></span></button> 
+									<button class="btn btn-default" type="button" id="selectall" title="所有可用"><span class="glyphicon glyphicon-check" style="cursor: pointer;"></span></button>
+								</div>
+								<div class="btn-group modules btn-group-lg" role="group" aria-label="randomizer">
+									<button class="btn btn-default randomizer" type="button" title="隨機"><span class="glyphicon glyphicon-random" style="cursor: pointer;"></span></button> 
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="panel-footer">
+						<p class="moduleDescription">&nbsp;</p>
+					</div>
+				</div>				
+			</div>
+			<div class="col-md-4">
+				<div class="panel panel-default">
+					<div class="panel-heading"><strong>其他選項:</strong></div>
+					<div class="panel-body">
+						<div class="form-horizontal">
+							<div class="form-group">
+								<div class="col-sm-offset-1 col-sm-11">
+									<div class="checkbox">
+										<label><input type="checkbox" name="print-privileges" id="print-privileges" value="-1" checked />列印時包含特權牌資料 <small>(是/否)</small></label>
+									</div>				
+								</div>				
+							</div>				
+						</div>				
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</nav>
+<div class="container">
+	<div id="target-head">正在載入 頁首...</div>
+	<div id="target-setup">正在載入 設置...</div>
+	<div id="target-privileges">正在載入 特權牌...</div>
+	<div id="target-examples">正在載入 範例...</div>
+</div>
+<div class="container">
+	<div id="target-phase12">正在載入 階段 1 和 2...</div>
+	<div id="target-phase3abcd">正在載入 階段 3A-D...</div>
+	<div id="target-phase3efgh">正在載入 階段 3E-H...</div>
+	<div id="target-scoring">正在載入 計分...</div>
+</div>
+<div class="container print-priv">
+	<div id="target-privileges-print">正在載入 列印用的特權牌...</div>
+</div>
+
+<script id="name-template" type="x-tmpl-mustache">
+	{{#1.I}}旅行{{/1.I}}
+	{{#2.I}}忙碌{{/2.I}}
+	{{#3.I}}獨立{{/3.I}}
+	{{#4.I}}好戰{{/4.I}}
+	{{#5.I}}冒險{{/5.I}}
+	{{#6.I}}網絡{{/6.I}}
+	{{#7.I}}偉大{{/7.I}}
+	{{#8.I}}多產{{/8.I}}
+	{{#9.I}}集資{{/9.I}}
+
+	{{#1.II}}商人的{{/1.II}}
+	{{#2.II}}先鋒的{{/2.II}}
+	{{#3.II}}實業家的{{/3.II}}
+	{{#4.II}}將軍的{{/4.II}}
+	{{#5.II}}探險家的{{/5.II}}
+	{{#6.II}}造路者的{{/6.II}}
+	{{#7.II}}地主的{{/7.II}}
+	{{#8.II}}生意人的{{/8.II}}
+	{{#9.II}}股份公司的{{/9.II}}
+
+	{{#1.III}}旅行世界{{/1.III}}
+	{{#2.III}}緊湊世界{{/2.III}}
+	{{#3.III}}多元世界{{/3.III}}
+	{{#4.III}}危機世界{{/4.III}}
+	{{#5.III}}未知世界{{/5.III}}
+	{{#6.III}}交通世界{{/6.III}}
+	{{#7.III}}名譽世界{{/7.III}}
+	{{#8.III}}豐饒世界{{/8.III}}
+	{{#9.III}}融資世界{{/9.III}}
+</script>
+<script id="template-head" type="x-tmpl-mustache">
+	<div class="row name">
+		<div class="col-md-12 col-xs-12">
+			<div class="quickmenu">
+				<div class="randomizer"><span class="glyphicon glyphicon-random btn-sm" style="cursor: pointer;" title="隨機"></span></div>
+				<div id="printicon"><span class="glyphicon glyphicon-print btn-sm" style="cursor: pointer;" title="列印"></span></div>
+				<div id="menuToggle"><span class="glyphicon glyphicon-menu-hamburger btn-sm" style="cursor: pointer;" title="選單"></span></div>
+                <!-- Added by studenttwok to change language -->
+                <div id="languageToggle"><span class="glyphicon glyphicon glyphicon-globe btn-sm" style="cursor: pointer;" title="Change to English"></span></div>
+			</div>
+
+			<h1>第 <span id="worldno" style="cursor:pointer;"><span class="mod{{world.0}}">{{world.0}}</span><span class="mod{{world.1}}">{{world.1}}</span><span class="mod{{world.2}}">{{world.2}}</span></span>
+				<input type="number" id="worldno-entry" maxlength="3" style="display:none;" />
+				號世界：{{long_name}}
+			</h1>
+		</div>
+	</div>
+	<div class="row top">
+		<div class="col-md-3 col-xs-3">
+			<div class="heading map{{map.value}}">
+				<h2>地圖 {{map.value}}</h2>
+					<p>{{#residents}}<img src="img/meeple.png" class="meeple">{{/residents}}
+					{{^residents}}<img src="img/meeple_not.png" class="meeple">{{/residents}}</p>
+			</div>
+		</div>
+		<div class="col-md-6 col-xs-6">
+			<div class="heading">
+				{{#order.clockwise}}
+					<h2>順時鐘順位</h2>
+					{{^mapnum.1}}{{^mapnum.2}}{{^mapnum.3}}<p>相同起始首都（中央城市）</p>{{/mapnum.3}}{{/mapnum.2}}{{/mapnum.1}}
+					{{^mapnum.4}}{{^mapnum.5}}<p>逆順位設置起始首都</p>{{/mapnum.5}}{{/mapnum.4}}
+				{{/order.clockwise}}
+				{{#order.income}}
+					<h2>浮動{{owner}}順位</h2>
+					<p>(依據收入由高到低)</p>
+				{{/order.income}}
+				{{#order.vp}}
+					<h2>浮動{{owner}}順位</h2>
+					<p>(依據分數由低到高)</p>
+				{{/order.vp}}
+				{{#order.shares}}
+					<h2>浮動公司順位</h2>
+					<p>(依據股價由高到低)</p>
+				{{/order.shares}}
+			</div>
+		</div>
+		<div class="col-md-3 col-xs-3">
+			<div class="heading">
+				<h2>起始資金</h2>
+				{{#money.fixed}}<p>每位玩家 ${{money.amount}}</p>{{/money.fixed}}
+				{{#money.increasing}}<p>依序拿取 $60, $70, $80, $90 (2♟: $60, $80)</p>{{/money.increasing}}
+				{{#money.shares}}<p>每 ♟: ($600 / 人數)</p>{{/money.shares}}
+				{{#3.III}}<p>每人再多拿 $20</p>{{/3.III}}
+			</div>
+		</div>
+	</div>
+</script>
+<script id="template-setup" type="x-tmpl-mustache">
+	<div class="row section">
+		<div class="col-md-2 col-xs-2"><h1>特殊遊戲配件</h1></div>
+		<div class="col-md-10 col-xs-10">
+			<ul class="parts">
+				{{#parts}}
+					<li><span>{{id}}</span>{{count}} {{name}}</li>
+				{{/parts}}
+			</ul>
+		</div>
+	</div>
+	{{#company}}<div class="row warning">
+		<div class="col-md-12 col-xs-12">
+			<p>重要：基於規則複雜，本頁只列舉重點，本模組的完整規則詳見使用手冊第26/27 頁。</p>
+		</div>
+	</div>{{/company}}
+	<div class="row section">
+		<div class="col-md-2 col-xs-2"><h1>遊戲準備</h1></div>
+		<div class="col-md-10 col-xs-10">
+			{{#5}}<p>將所有地圖板塊依地形分類成堆：城市、水域、草地、森林、田野、山脈、沙漠。 {{#1}}{{^1.III}}將所有城市板塊依數字大小疊成一疊，數字越大越下面。{{/1.III}}{{/1}}</p>{{/5}}
+			<p>
+				翻開地圖 {{map.value}}。
+				{{#1}}{{^1.III}}將城市板塊標有貨物的一面朝上。 {{#8}} 城市板塊上不放貨物。{{/8}}{{^8}} 依照小圓圈內的符號，在每座城市擺上4份對應貨物。{{/8}}{{/1.III}}{{/1}}
+				{{#8}}
+					{{^8.III}}
+						將所有板塊有貨物的一面朝上。
+						沙漠不產出任何貨物（但見 <span class="water-adjacent icon">&nbsp;&nbsp;  </span>）。
+					{{/8.III}}
+					{{#8.III}}{{#1}}
+						將所有板塊有貨物的一面朝上。
+						沙漠不產出任何貨物（但見 <span class="water-adjacent icon">&nbsp;&nbsp;  </span>）。
+					{{/1}}{{/8.III}}
+				{{/8}}
+			</p>
+			{{^7}}
+				{{#6.I}}
+					<p>將地形計算板有沙漠的那面朝上，放在地圖一側，每{{owner}}的6個標記放在其下方。</p>
+				{{/6.I}}
+				{{#6.II}}
+					<p>將地形計算板{{^2.III}}沒{{/2.III}}{{#2.III}}{{^9.I}}{{^5.I}}沒{{/5.I}}{{/9.I}}{{/2.III}}有沙漠的那面朝上，放在地圖一側。放置每{{owner}}{{^2.III}}5個{{/2.III}}{{#2.III}}{{^9.I}}5個{{/9.I}}{{#9.I}}6個{{/9.I}}{{/2.III}}標記在其下方。</p>
+				{{/6.II}}
+			{{/7}}
+			{{#7}}
+				<p>將地形計算板有沙漠的那面朝上，放在地圖一側，每位{{owner}}的6個標記放在其下方。</p>
+			{{/7}}
+			{{#1.II}}<p>將貨物價格板放在地圖一側，並在其「20」的地方放上每種貨物各一份。</p>{{/1.II}}
+			{{#9}}<p>
+				{{^9.III}}請為五家公司準備遊戲配件。{{/9.III}}
+				{{^1.II}}將股票價格板放在地圖一側。{{/1.II}}
+				{{#1.II}}股票/貨物價格板同時記錄貨物及股票價值。 {{/1.II}}
+				{{#9.II}}
+					每家公司拿取起始資金，放在各自的股份公司板上：綠色$200、白色和紫色$150、藍色和橘色$100。
+				{{/9.II}}
+				{{#9.III}}
+					每位玩家是其中一家公司的總裁，並拿取該公司的總裁股，然後將剩餘8張股票放在自己面前，暗面朝上。將股票{{#1.II}}/貨物{{/1.II}}價格板上的指示物都放在20的位置，使每家公司的起始股價皆為$20。 {{^3}}{{^7.I}}依據玩家人數，放置對應的順位牌。每位玩家拿1名村民放在順位牌一旁。{{/7.I}}{{/3}}
+				{{/9.III}}
+			</p>{{/9}}
+			{{#3}}
+				<p>本局遊戲會用到的特權牌：<strong>{{priv.list}}</strong>.<br />{{#company}}請用每種特權牌各2張，來組成特權牌庫。{{/company}}{{^company}}4♟: 請用每種特權牌各2張，來組成特權牌庫。 3♟: 請拿取每種特權牌各1張，隨機移除一半（小數點以下捨去），再加回每種特權各1張來組成特權牌庫。 2♟: 每種特權各1張組成特權牌庫。{{/company}}</p>
+ 				<p>將選用的特權牌依照牌背的羅馬數字（I、II、III）分別面朝下洗牌後，依照羅馬數字疊成一疊（I在最上方，III在最底下）。</p>
+				<p>將價格標記放在地圖旁。翻開與{{owner}}數量相等的特權牌，面朝上在價格標記右側排成一列，每張特權牌目前的價格都是$20。</p>
+			{{/3}}
+			{{#2.III}}
+				{{^5.I}}{{^6}}{{^7}}
+					{{^9.I}}<p>地形計算{{^4.I}}板及{{/4.I}}標記放回盒子，本局遊戲並不用到。</p>{{/9.I}}
+					{{#9.I}}{{^5.II}}<p>地形計算 {{^4.II}}板及{{/4.II}}標記放回盒子，本局遊戲並不用到。</p>{{/5.II}}{{/9.I}}
+				{{/7}}{{/6}}{{/5.I}}
+				{{#1.I}}<p>在地圖旁放五種貨物各1份及5枚5分。</p>{{/1.I}}
+				{{#3.I}}<p>請在地圖旁放工廠及2枚10分。</p>{{/3.I}}
+				{{#4.I}}
+					{{^6}}{{^7}}<p>地形計算板放到地圖旁。</p>{{/7}}{{/6}}
+					<p>首先征服一座中立城市獲得3分，第二位征服一座中立城市的人獲得4分，依此類推。</p>
+				{{/4.I}}
+				{{#5.I}}
+					{{^6}}{{^7}}<p>將地形計算板有沙漠的那面朝上，放在地圖一側，每位{{owner}}的6個標記放在其下方。</p>{{/7}}{{/6}}
+					<p>在地形計算板每種地形上放置5分。 {{#6}}每位{{owner}}放置6個標記到地形計算板每種地形上，以追蹤開發程度。{{/6}}{{#7}}每位玩家放置6個標記到地形計算板每種地形上，以追蹤開發程度。{{/7}}</p>
+				{{/5.I}}
+				{{#6.I}}<p>在地形計算板每種地形上放置5分。</p>{{/6.I}}
+				{{#7.I}}<p>在地形計算板的第一行旁邊放置10分，第二行旁邊放置20分。</p>{{/7.I}}
+				{{#8.I}}<p>從每種貨品中拿1張，每張加上5分，放到地圖旁。</p>{{/8.I}}
+				{{#9.I}}
+					{{#1.II}}<p>從每種貨品中拿1張，每張加上$50，放到地圖旁。</p>{{/1.II}}
+					{{#3.II}}<p>放置2間工廠，每間附上$100，放到地圖旁。</p>{{/3.II}}
+					{{#4.II}}
+						<p>放置地形計算板到地圖旁。</p>
+						<p>在地形計算板上的第1個城市空間旁放置$30，第2個城市空間旁放置$40，依此類推。</p>
+					{{/4.II}}
+					{{#5.II}}
+						<p>將地形計算板有沙漠的那面朝上，放在地圖一側，將6個代表公司的標記放在其下方。</p>
+						<p>在地形計算板每種地形上放置$50。</p>
+					{{/5.II}}
+					{{#6.II}}<p>在地形計算板每種地形上放置$50。</p>{{/6.II}}
+					{{#7.II}}<p>在地形計算板的第一行旁邊放置$100，第二行旁邊放置$200。</p>{{/7.II}}
+					{{#8.II}}<p>從每種貨品中拿1張，每張加上$50，放到地圖旁。</p>{{/8.II}}
+				{{/9.I}}
+			{{/2.III}}
+			{{#2}}{{^2.III}}
+					<p>將10張城市牌面朝上放在地圖旁。</p>
+			{{/2.III}}{{/2}}
+			{{#6}}
+				{{^4}}<p>每位 {{owner}} 得到 {{^company}}19{{/company}}{{#company}}14{{/company}} 條 {{owns}} 顏色的道路。道路數量沒有上限，因此若有需要，玩家可以使用替代品來做為額外道路。</p>{{/4}}
+				{{#4}}<p>將 40 條中立路道放在一起成為供應堆，供所有{{owners}}使用。道路數量沒有上限，因此若有需要，{{agent}}可以使用替代品來做為額外道路。</p>{{/4}}
+			{{/6}}
+			{{#company}}
+				<p>在公司輪(BR)翻開5家公司的 {{#9.II}}{{#7.I}}計分{{/7.I}}{{^7.I}}公司順位{{/7.I}}{{/9.II}}{{^9.II}}玩家順位{{/9.II}}卡。每家公司放置1個市民到這些卡旁。選一位玩家拿取股份輪(SR)的起始玩家牌。</p>
+			{{/company}}
+			<p>
+				{{#order.clockwise}}選一位起始玩家開始遊戲，回合以順時針方向進行。 {{^mapnum.1}}{{^mapnum.2}}{{^mapnum.3}}所有玩家將首都放到地圖中央的城市上。{{/mapnum.3}}{{/mapnum.2}}{{/mapnum.1}}{{^mapnum.4}}{{^mapnum.5}}玩家以逆順序選擇他們的首都。{{/mapnum.5}}{{/mapnum.4}}{{/order.clockwise}}
+				{{^order.clockwise}}
+					{{#order.shares}}選擇一位起始玩家開始首個股票輪 (SR)。當成立公司時，設置首都。{{/order.shares}}
+					{{^order.shares}}
+						依照階段1所決定之{{owner}}順位進行遊戲。 {{^9.II}}於階段1時設置首都。{{/9.II}}{{#9.II}}當公司成立時設置首都。{{/9.II}}
+						{{#order.income}}選擇對應玩家人數的順位牌放在地圖旁，每位玩家拿一名村民，放在這些牌的旁邊。{{/order.income}}
+						{{#order.vp}}
+							{{^9.II}}
+								<p>2♟, 3♟, 4♟: 選擇對應玩家人數的玩家順位牌及計分牌放在地圖旁。拿2張順位牌放在地圖一旁。之後，將計分牌依據牌背羅馬數字（I、II、III）分別洗牌後，在順位牌旁邊，面朝下排成三列。</p>
+							{{/9.II}}
+							{{#9.II}}
+								<p>基於公司數量是浮動的，請在每個公司輪 (BR) 拿取對應的牌：</p>
+								<ul>
+									<li>第1及2個公司輪: 拿取等同營運中公司數量的順位牌。</li>
+									<li>第3個公司輪: 拿取牌背為I 的計分牌，將其中「第一次計分」與數張有<span class="glyphicon glyphicon-ok"></span>符號的牌洗在一起，使總張數和營運中公司數相同，將其面朝下放置。</li>
+									<li>第4及5個公司輪: 如前條所述，分別使用牌背為II/III 的計分牌。</li>
+								</ul>
+							{{/9.II}}
+						{{/order.vp}}
+					{{/order.shares}}
+				{{/order.clockwise}}
+			</p>
+			{{#1}}{{^1.III}}
+				<p>決定首都時，{{agent}}只可選擇生產不同貨品的城市。</p>
+			{{/1.III}}{{/1}}
+			{{#4}}
+				{{#9}}
+					{{^9.III}}<p>公司可以選擇任何{{^mapnum.1}}位於邊沿的{{/mapnum.1}}城市成為首都。</p>{{/9.III}}
+					{{#9.III}}<p>{{#mapnum.1}}每位玩家必須要選擇不同的城市為首都。玩家不能選擇位於地圖中間的城市！{{/mapnum.1}}{{^mapnum.1}}按玩家人數，按以下方式選擇首都： 2♟： 正對角。 3♟: 正三角形三頂點。 4♟: 未選用的兩個城市在正對角。{{/mapnum.1}}</p>{{/9.III}}
+				{{/9}}
+				{{^9}}<p>{{#mapnum.1}}每位玩家必須要選擇不同的城市為首都。玩家不能選擇位於地圖中間的城市！{{/mapnum.1}}{{^mapnum.1}}玩家必須要選擇地圖邊沿的城市，而不能選擇位於地圖中間的城市，並因玩家人數有以下限制： 2♟: 正對角。 3♟: 正三角形三頂點。 4♟: 未選用的兩個城市在正對角。{{/mapnum.1}}</p>{{/9}}
+				{{#1}}{{^1.III}}{{^company}}{{^mapnum.1}}<p>進行 2♟/4♟ 遊戲時，玩家不能選擇城市5 和城市10 作為他們的首都。 (這讓所有玩家符合首都放置的規則。)</p>{{/mapnum.1}}{{/company}}{{/1.III}}{{/1}}
+				{{#8}}
+					{{^8.III}}<p>放置1棟兵營到所有空白的城市上。這些兵營視為交易所。</p>{{/8.III}}
+					{{#8.III}}<p>放置1棟兵營及1位民兵到所有空白的非首都城市上。</p>{{/8.III}}
+				{{/8}}
+				{{^8}}<p>放置1棟兵營及1位民兵到所有空白的非首都城市上。</p>{{/8}}
+			{{/4}}
+			{{#2}}{{^2.III}}
+					<p>每名{{owner}}放置1座村落到相關的城市牌上，以標記首都。</p>
+					{{^residents}}<p>所有{{agent}}放置他們的{{#company}}公司&rsquo;{{/company}} 9位村民於9個非首都城市。</p>{{/residents}}
+			{{/2.III}}{{/2}}
+			{{#1}}
+				{{#1.III}}
+					{{^residents}}<p>每輛貨車有 3點移動點數(MP)。每位{{agent}}放置{{fowns}}的貨車到{{owns}}的首都上。</p>{{/residents}}
+					{{#residents}}<p>每輛貨車有 1個貨艙及3點移動點數(MP)。每位{{agent}}放置{{fowns}}貨車到{{owns}}首都上。</p>{{/residents}}
+				{{/1.III}}
+				{{^1.III}}
+					<p>每輛貨車有 1個貨艙及3點移動點數(MP)。每位{{agent}}放置{{fowns}}貨車到{{owns}}首都上{{^8}}及即時放置一個貨物到{{owns}}貨艙上{{/8}}。</p>
+				{{/1.III}}	
+			{{/1}}	
+		</div>
+	</div>
+</script>
+<script id="template-privileges" type="x-tmpl-mustache">
+	{{#3}}
+		<div class="row section cards">
+			<div class="col-md-2 col-xs-2 mod3"><h1>特權牌庫</h1></div>
+			<div class="col-md-10 col-xs-10">
+				{{#priv.I.exists}}
+				<h3>I 時期特權</h3>
+				<div class="row privileges">
+					{{#priv.I.1}}<div class="col-md-4 col-xs-12 col-sm-6"><div class="row"><div class="col-xs-4"><img src="img/privileges/card-l1-1.png" /></div><div class="col-xs-8"><strong>I (1)</strong> 你在購買村民時，每片板塊可以多放一名村民，但仍不能超過該板塊的村民數量上限（首都：總部 + 9 名村民、其他板塊：村落 + 7 名村民）。（階段3C：購買）</div></div></div>{{/priv.I.1}}
+					{{#priv.I.2}}<div class="col-md-4 col-xs-12 col-sm-6"><div class="row"><div class="col-xs-4"><img src="img/privileges/card-l1-2.png" /></div><div class="col-xs-8"><strong>I (2)</strong> 每當你放置村落到一個城市板塊上時，你獲得一次性的$15，在你的收入階段領取。（階段3H：收入）</div></div></div>{{/priv.I.2}}
+					{{#priv.I.3}}<div class="col-md-4 col-xs-12 col-sm-6"><div class="row"><div class="col-xs-4"><img src="img/privileges/card-l1-3.png" /></div><div class="col-xs-8"><strong>I (3)</strong> 當公司的所有股份都被玩家所持有時，公司股價改為上升$20（原為$10）。（股份輪 SR）</div></div></div>{{/priv.I.3}}
+					{{#priv.I.4}}<div class="col-md-4 col-xs-12 col-sm-6"><div class="row"><div class="col-xs-4"><img src="img/privileges/card-l1-4.png" /></div><div class="col-xs-8"><strong>I (4)</strong> 當你被攻擊時，攻擊方的命中減一（你的反擊次數也跟著調整）。（階段 3G: 戰鬥{{#2}}, 階段 3D: 村民{{/2}}）</div></div></div>{{/priv.I.4}}
+					{{#priv.I.5}}<div class="col-md-4 col-xs-12 col-sm-6"><div class="row"><div class="col-xs-4"><img src="img/privileges/card-l1-5.png" /></div><div class="col-xs-8"><strong>I (5)</strong> 你的收入增加$10。（階段3H：收入）</div></div></div>{{/priv.I.5}}
+					{{#priv.I.6}}<div class="col-md-4 col-xs-12 col-sm-6"><div class="row"><div class="col-xs-4"><img src="img/privileges/card-l1-6.png" /></div><div class="col-xs-8"><strong>I (6)</strong> 你賣貨時，你每賣一份便額外獲得$10。（階段3H：收入）</div></div></div>{{/priv.I.6}}
+					{{#priv.I.7}}<div class="col-md-4 col-xs-12 col-sm-6"><div class="row"><div class="col-xs-4"><img src="img/privileges/card-l1-7.png" /></div><div class="col-xs-8"><strong>I (7)</strong> 公司的維持費至多$20，多餘的費用直接忽略。（階段4：股利）</div></div></div>{{/priv.I.7}}
+					{{#priv.I.8}}<div class="col-md-4 col-xs-12 col-sm-6"><div class="row"><div class="col-xs-4"><img src="img/privileges/card-l1-8.png" /></div><div class="col-xs-8"><strong>I (8)</strong> 你每次升級費用減少$15（包含行動點與貨艙升級）。（階段3C：購買）</div></div></div>{{/priv.I.8}}
+					{{#priv.I.9}}<div class="col-md-4 col-xs-12 col-sm-6"><div class="row"><div class="col-xs-4"><img src="img/privileges/card-l1-9.png" /></div><div class="col-xs-8"><strong>I (9)</strong> 你在決定興建道路所須的村民數時，森林如同草原，只須1名村民。（階段3D：村民）</div></div></div>{{/priv.I.9}}
+					{{#priv.I.10}}<div class="col-md-4 col-xs-12 col-sm-6"><div class="row"><div class="col-xs-4"><img src="img/privileges/card-l1-10.png" /></div><div class="col-xs-8"><strong>I (10)</strong> 探索時，在你擺放完探索片之後，你可以移動其中一片已擺放的探索片，到一個有已經有至少一片探索片的地形旁。 ({{#residents}}階段3D：村民{{/residents}}{{^residents}}階段3E：貨車{{/residents}}) 範例：瑞秋可以移動在水域旁的探索片到草原旁。他不能將探索片移動到城市，因為那裡原本沒有探索片。</div></div></div>{{/priv.I.10}}
+					{{#priv.I.11}}<div class="col-md-4 col-xs-12 col-sm-6"><div class="row"><div class="col-xs-4"><img src="img/privileges/card-l1-11.png" /></div><div class="col-xs-8"><strong>I (11)</strong> 本特權價值2分。{{#7.I}}（此分數也將列入玩家順位計算。）{{/7.I}} (最終計分)</div></div></div>{{/priv.I.11}}
+					{{#priv.I.12}}<div class="col-md-4 col-xs-12 col-sm-6"><div class="row"><div class="col-xs-4"><img src="img/privileges/card-l1-12.png" /></div><div class="col-xs-8"><strong>I (12)</strong> 此牌視作在地形計算板上額外的一片農田。（多數）</div></div></div>{{/priv.I.12}}
+				</div>
+				{{/priv.I.exists}}
+				{{#priv.II.exists}}
+				<h3>II 時期特權</h3>
+				<div class="row privileges">
+					{{#priv.II.1}}<div class="col-md-4 col-xs-12 col-sm-6"><div class="row"><div class="col-xs-4"><img src="img/privileges/card-l2-1.png" /></div><div class="col-xs-8"><strong>II (1)</strong> 公司可改為每$20支付每股$1（總裁股$2）股利；股價仍上升$10。（階段4：股利）</div></div></div>{{/priv.II.1}}
+					{{#priv.II.2}}<div class="col-md-4 col-xs-12 col-sm-6"><div class="row"><div class="col-xs-4"><img src="img/privileges/card-l2-2.png" /></div><div class="col-xs-8"><strong>II (2)</strong> 在決定完玩家順位後，你不須付稅。（階段1：玩家順位）</div></div></div>{{/priv.II.2}}
+					{{#priv.II.3}}<div class="col-md-4 col-xs-12 col-sm-6"><div class="row"><div class="col-xs-4"><img src="img/privileges/card-l2-3.png" /></div><div class="col-xs-8"><strong>II (3)</strong> 你興建工廠的費用恆為$20（非原本的$20、$30、$40。）（階段3F：工廠）</div></div></div>{{/priv.II.3}}
+					{{#priv.II.4}}<div class="col-md-4 col-xs-12 col-sm-6"><div class="row"><div class="col-xs-4"><img src="img/privileges/card-l2-4.png" /></div><div class="col-xs-8"><strong>II (4)</strong> 你購買村民的費用恆為$8（非原本的$10）（階段3C：購買）</div></div></div>{{/priv.II.4}}
+					{{#priv.II.5}}<div class="col-md-4 col-xs-12 col-sm-6"><div class="row"><div class="col-xs-4"><img src="img/privileges/card-l2-5.png" /></div><div class="col-xs-8"><strong>II (5)</strong> 每回合你的貨車有額外的1行動點。（階段3E：貨車） 範例：卡蜜兒用她僅剩的3 行動點，將他的貨車移動到2 號城市旁的草原，並透過特權將貨車移動到2 號城市。</div></div></div>{{/priv.II.5}}
+					{{#priv.II.6}}<div class="col-md-4 col-xs-12 col-sm-6"><div class="row"><div class="col-xs-4"><img src="img/privileges/card-l2-6.png" /></div><div class="col-xs-8"><strong>II (6)</strong> 你可以多送1份貨物到你的交易所。（階段3H：收入、遊戲結束{{#1}}, 階段3E：貨車{{/1}}）</div></div></div>{{/priv.II.6}}
+					{{#priv.II.7}}<div class="col-md-4 col-xs-12 col-sm-6"><div class="row"><div class="col-xs-4"><img src="img/privileges/card-l2-7.png" /></div><div class="col-xs-8"><strong>II (7)</strong> {{#1}}{{^1.III}}你在決定移動貨車所須花費的行動點時，山脈如同草原，只須1行動點。（階段3E：貨車）{{/1.III}}{{/1}}{{#4}}{{^4.III}} 你攻擊山脈上的對手時，山脈如同草原，讓你的每顆骰子點數＋1。（階段3G：戰鬥）{{/4.III}}{{/4}}{{#6}}{{^6.III}} 你在決定興建道路所須的村民數時，山脈如同草原，只須1名村民。（階段3D：村民）{{/6.III}}{{/6}}{{#8.I}} 你在決定興建製造所所須的村民數時，山脈如同草原，只須1名村民。（階段3D：村民）{{/8.I}}</div></div></div>{{/priv.II.7}}
+					{{#priv.II.8}}<div class="col-md-4 col-xs-12 col-sm-6"><div class="row"><div class="col-xs-4"><img src="img/privileges/card-l2-8.png" /></div><div class="col-xs-8"><strong>II (8)</strong> 你在決定興建道路所須的村民數時，城市如同草原，只須1名村民。（階段3D：村民）</div></div></div>{{/priv.II.8}}
+					{{#priv.II.9}}<div class="col-md-4 col-xs-12 col-sm-6"><div class="row"><div class="col-xs-4"><img src="img/privileges/card-l2-9.png" /></div><div class="col-xs-8"><strong>II (9)</strong> 本特權價值3分。{{#7}}（此分數也將列入玩家順位計算。）{{/7}}（最終計分）</div></div></div>{{/priv.II.9}}
+					{{#priv.II.10}}<div class="col-md-4 col-xs-12 col-sm-6"><div class="row"><div class="col-xs-4"><img src="img/privileges/card-l2-10.png" /></div><div class="col-xs-8"><strong>II (10)</strong> 此牌視作在地形計算板上額外的一片森林。 (多數)</div></div></div>{{/priv.II.10}}
+					{{#priv.II.11}}<div class="col-md-4 col-xs-12 col-sm-6"><div class="row"><div class="col-xs-4"><img src="img/privileges/card-l2-11.png" /></div><div class="col-xs-8"><strong>II (11)</strong> 你的一名村民在一回合內可以執行兩次行動。 (階段3D：村民)</div></div></div>{{/priv.II.11}}
+					{{#priv.II.12}}<div class="col-md-4 col-xs-12 col-sm-6"><div class="row"><div class="col-xs-4"><img src="img/privileges/card-l2-12.png" /></div><div class="col-xs-8"><strong>II (12)</strong> 你的收入增加$20。 (階段3H：收入)</div></div></div>{{/priv.II.12}}
+				</div>
+				{{/priv.II.exists}}
+				{{#priv.III.exists}}
+				<h3>III 時期特權</h3>
+				<div class="row privileges">
+					{{#priv.III.1}}<div class="col-md-4 col-xs-12 col-sm-6"><div class="row"><div class="col-xs-4"><img src="img/privileges/card-l3-1.png" /></div><div class="col-xs-8"><strong>III (1)</strong> 你移動貨車到城市時無須花費行動點；若你的行動點已經用完，你仍可以移動貨車到隔壁的城市上。（階段3E：貨車）</div></div></div>{{/priv.III.1}}
+					{{#priv.III.2}}<div class="col-md-4 col-xs-12 col-sm-6"><div class="row"><div class="col-xs-4"><img src="img/privileges/card-l3-2.png" /></div><div class="col-xs-8"><strong>III (2)</strong> 此牌視作在地形計算板上額外的一片草原。（多數）</div></div></div>{{/priv.III.2}}
+					{{#priv.III.3}}<div class="col-md-4 col-xs-12 col-sm-6"><div class="row"><div class="col-xs-4"><img src="img/privileges/card-l3-3.png" /></div><div class="col-xs-8"><strong>III (3)</strong> 此牌視作在地形計算板上額外的一座城市。（多數）</div></div></div>{{/priv.III.3}}
+					{{#priv.III.4}}<div class="col-md-4 col-xs-12 col-sm-6"><div class="row"><div class="col-xs-4"><img src="img/privileges/card-l3-4.png" /></div><div class="col-xs-8"><strong>III (4)</strong> 你在戰鬥時，不論攻守，都多使用一顆骰子。（階段3G：戰鬥{{#2}}, 階段3D：村民{{/2}}）</div></div></div>{{/priv.III.4}}
+					{{#priv.III.5}}<div class="col-md-4 col-xs-12 col-sm-6"><div class="row"><div class="col-xs-4"><img src="img/privileges/card-l3-5.png" /></div><div class="col-xs-8"><strong>III (5)</strong> 你控制的每一片板塊，都讓你獲得$10收入（原為$5）。（階段3H：收入）</div></div></div>{{/priv.III.5}}
+					{{#priv.III.6}}<div class="col-md-4 col-xs-12 col-sm-6"><div class="row"><div class="col-xs-4"><img src="img/privileges/card-l3-6.png" /></div><div class="col-xs-8"><strong>III (6)</strong> 本特權價值5分。{{#7.I}}（此分數也將列入玩家順位計算。）{{/7.I}}（最終計分）</div></div></div>{{/priv.III.6}}
+					{{#priv.III.7}}<div class="col-md-4 col-xs-12 col-sm-6"><div class="row"><div class="col-xs-4"><img src="img/privileges/card-l3-7.png" /></div><div class="col-xs-8"><strong>III (7)</strong> 你興建工廠的費用恆為$20（非原本的$20、$30、$40）。（階段3F：工廠）</div></div></div>{{/priv.III.7}}
+					{{#priv.III.8}}<div class="col-md-4 col-xs-12 col-sm-6"><div class="row"><div class="col-xs-4"><img src="img/privileges/card-l3-8.png" /></div><div class="col-xs-8"><strong>III (8)</strong> 你的交易所免費（不論是該城市的第幾棟）。（階段3D：村民）</div></div></div>{{/priv.III.8}}
+					{{#priv.III.9}}<div class="col-md-4 col-xs-12 col-sm-6"><div class="row"><div class="col-xs-4"><img src="img/privileges/card-l3-9.png" /></div><div class="col-xs-8"><strong>III (9)</strong> 你每回合可以免費蓋一條路，須符合蓋路的規則，但無須正常狀態的村民。（階段3D：村民）</div></div></div>{{/priv.III.9}}
+				</div>
+				{{/priv.III.exists}}
+			</div>
+		</div>
+	{{/3}}
+</script>
+<script id="template-examples" type="x-tmpl-mustache">
+	{{#capture}}
+		{{#4}}{{#5}}<p>放置 1 個兵營及 1 個 民兵到所有已探索的空城市。</p>{{/5}}{{/4}}
+		{{#9.I}}<p>遊戲在第五個公司輪之後結束。遊戲的流程為：股份輪 ➜ 第1 個公司輪 ➜ 第2 個公司輪 ➜ 股份輪 ➜ 第3 個公司輪 ➜ 股份輪 ➜第4 個公司輪 ➜ 股份輪 ➜ 第5 個公司輪，結束。</p>{{/9.I}}
+		{{#9.II}}<p>遊戲將從股份輪開始，股份輪與公司輪<b>交替進行</b>： 股份輪、公司輪、股份輪、公司輪、股份輪、公司輪，如此類推，直到觸發遊戲結束條件</p>{{/9.II}}
+	{{/capture}}
+	{{#hascapture}}
+	<div class="row section">
+		<div class="col-md-2 col-xs-2 {{#4}}{{#5}}mod5{{/5}}{{/4}}{{#9.I}} mod9{{/9.I}}{{#9.II}} mod9{{/9.II}}"><h1>遊戲進行</h1></div>
+		<div class="col-md-10 col-xs-10">{{{captured}}}</div>
+	</div>
+	{{/hascapture}}
+	<div class="row notes">
+		{{#2.II}}
+			<div class="note col-md-4 col-xs-4">
+				<img src="img/example-2-ii.png" style="width: 100%">
+				<h2>收入範例：</h2>
+				<p>在保羅的回合中，他率先在1 片草原、1 片森林和4 號城市上設置村落；此外，他也在1 號城市上設置村落，而該處已經有瑞秋的村落。他在兩座城市的城市牌的上方各擺1 名他的村民。在收入階段，保羅一共獲得$90=$20（首都）+$20（農田、森林和4 號城市的村落）+$50（因為這是他第二和第三位到城市牌上的村民），最後，他將這兩位村民移動到城市牌的下方。</p>
+			</div>
+		{{/2.II}}
+		{{#3}}
+			{{^3.III}}
+				<div class="note col-md-3 col-xs-4">
+					<h2>計算稅項：</h2>
+					<p>為簡化抽稅的過程，{{^7.I}}{{^9.I}}首個{{owner}}{{/9.I}}{{/7.I}}{{#7.I}}收入最高的玩家{{/7.I}}{{#9.I}}收入最高的公司{{/9.I}}每收入$10 支付$2 稅金，其他玩家除了 {{^7.I}}{{^9.I}}尾家{{/9.I}}{{/7.I}}{{#7.I}}收入最低的玩家{{/7.I}}{{#9.I}}收入最低的公司{{/9.I}}每收入$10 則支付$1 稅金。{{^7.I}}{{^9.I}}最尾{{owner}}{{/9.I}}{{/7.I}}{{#7.I}}收入最低的玩家{{/7.I}}{{#9.I}}收入最低的公司{{/9.I}}繳$0稅項。</p>
+					{{^7.I}}{{^9.I}}
+						<h2>範例：</h2>
+						<p>卡蜜兒在上一輪的收入為$68，在新一輪她是首家，因此必須為$60 繳交20% 的稅金，共計$12。</p>
+					{{/9.I}}{{/7.I}}
+				</div>
+				{{#7.I}}
+					<div class="note col-md-3 col-xs-4">			
+						<h2>範例：</h2>
+						<p>現時的玩家順位是John，Camille，Sarah和Harry，在上一輪他們分別賺得$50，$68，$68和$50。Camille和Sarah得到同樣最高收入($68)；由於Camille順位較前，她每賺到$10就繳付$2，在本例中則要繳付$12；John和Harry得到同樣最低收入；由於Harry順序較後，他不用繳付稅項。Sarah和John分別繳付$6和$5。</p>
+					</div>
+				{{/7.I}}
+				{{#9.I}}
+					<div class="note col-md-3 col-xs-4">
+						<h2>範例：</h2>
+						<p>現時的公司順位是橘色，藍色，白色，綠色和紫色，在上一輪他們分別賺得$40，$68，$68，$40和$50。藍色公司和白色公司得到同樣最高收入($68)；由於藍色公司順位較先，他每賺到$10就繳付$2，在本例中則要繳付$12。橘色公司和綠色公司得到同樣最低收入；由於綠色公司順序較後，他不用繳付稅項。白色公司，紫色公司和橘色公司分別繳付 $6，$5和$4。</p>
+					</div>
+				{{/9.I}}
+				<div class="note col-md-3 col-xs-6">
+					<h2>工廠：</h2>
+					<p>玩家繳付以下款項以於城市建造工廠。</p>
+					<table>
+						<tr><th>第一 <span class="factory bigicon"></span></th><th>第二 <span class="factory bigicon"></span></th><th>第三 <span class="factory bigicon"></span></th></tr>
+						<tr><td>$20</td><td>$30</td><td>$40</td></tr>
+					</table>
+				</div>
+			{{/3.III}}
+		{{/3}}
+		{{#1}}
+			<div class="note col-md-2 col-xs-4">
+				<h2>升級費用</h2>
+				<table>
+					<tr><th>4, 5, 7 移動點數 (MP)</th><td>每次 {{#1.III}}{{#residents}}$30{{/residents}}{{^residents}}$50{{/residents}}{{/1.III}}{{^1.III}}$50{{/1.III}}</td></tr>
+					<tr><th>2 容量貨艙</th><td>{{#1.III}}$40{{/1.III}}{{^1.III}}$80{{/1.III}}</td></tr>
+				</table>
+			</div>
+			{{^residents}}
+				<div class="note col-md-3 col-xs-6">
+					<h2>額外移動點數 (MP) 的費用</h2>
+					<table>
+						<tr><th>增加的MP</th><th>+1</th><th>+2</th><th>+3</th><th>+4</th><th>+5</th></tr>
+						<tr><th>總共</th><td>$20</td><td>$50</td><td>$90</td><td>$140</td><td>$200</td></tr>
+					</table>
+				</div>
+			{{/residents}}
+			{{#1.I}}
+				<div class="note col-md-6 col-xs-8">
+					<h2>最終計分：</h2>
+					<p>針對每一種貨物，依據玩家運送的份數獲得以下分數。</p>
+					<table>
+						<tr><th>同種貨物份數</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5+</th></tr>
+						<tr><th>分數 (VP)</th><td>5 VP</td><td>9 VP</td><td>12 VP</td><td>14 VP</td><td>15 VP</td></tr>
+					</table>
+					<p>此外，五種不同的貨物各一份組成 1 組，每組都讓玩家再獲得額外2 分。</p>
+				</div>
+			{{/1.I}}
+		{{/1}}
+		{{#2.I}}
+			<div class="note col-md-4 col-xs-6">
+				<h2>最終計分：</h2>
+				<p>玩家在 X 張城市牌上，因人口而得到的分數，X是觸發遊戲結束的城市數量。</p>
+				<table>
+					<tr><th>有人口的城市牌數目</th><th>X - 3 及或小</th><th>X - 2</th><th>X - 1</th><th>X</th><th>X + 1 及更多</th></tr>
+					<tr><th>分數 (VP)</th><td>22 VP</td><td>26 VP</td><td>32 VP</td><td>40 VP</td><td>50 VP</td></tr>
+				</table>
+				{{^residents}}<p>在玩家的貨車行經最後一座城市後，他每多花1 行動點繼續前行，都帶給他額外1 分。</p>{{/residents}}
+			</div>
+			<div class="note col-md-3 col-xs-3">
+				<img src="img/example-2-i.png" style="width: 100%">
+				<p><b>最終計分範例：</b> 人遊戲中，卡蜜兒擺放她第8 名村民到城市牌上，遊戲結束。她得到40 分，保羅只有7 名村民城市牌上，因此他得到32 分。{{^residents}}最後一輪中，安娜的貨車行經最後一座城市後，又花了3 行動點繼續前行，故獲得額外3 分。{{/residents}}</p>
+			</div>
+		{{/2.I}}
+		{{#4}}
+			{{^4.III}}
+				<div class="note col-md-12 col-xs-12">
+					<h2>戰鬥依照以下步驟並對照攻擊表進行結算：</h2>
+					<ol>
+						<li>攻方為每個攻擊的部隊擲一顆骰（遊戲只提供三顆骰，故玩家可能需要重複擲骰）來決定是否命中守方部隊。每命中一個，攻方玩家便移除一個守方部隊（多餘的命中沒有效果）。</li>
+						<li>若守方有任何部隊被移除，則守方為每個被移除的部隊擲一顆骰。每命中一個，便移除一個攻方部隊（多餘的命中沒有效果）。</li>
+						<li>若所有守方部隊都被移除且攻方有部隊存留，攻方成功佔領該板塊；攻方將一名村民在該處換成村落。反之，只要有任何守方部隊存留，攻方將所有他存活下來的部隊，撤退到隔壁一個無戰鬥、且為攻方控制的板塊，存活部隊進入疲倦狀態，直到下一輪才能恢復正常。</li>
+					</ol>
+				</div>
+				<div class="note col-md-4 col-xs-6">
+					<h2>擲骰點數的判定：</h2>
+					<table>
+						<tr><th>骰子點數</th><th class="dice">⚀⚁</th><th class="dice">⚂⚃</th><th class="dice">⚄⚅</th></tr>
+						<tr><th>攻擊</th><td>0 hits</td><td>1 hit</td><td>2 hits</td></tr>
+						<tr><th>防守</th><td>0 hits</td><td colspan="2">1 hit</td></tr>
+					</table>
+				</div>
+				<div class="note col-md-4 col-xs-6">
+					<p>攻方的骰子點數會依據地形而有以下修正...</p>
+					<p>... <span class="mountain bigicon"></span> or <span class="city bigicon"></span>： 攻方每顆骰子點數 -1。</p>
+					<p>... <span class="grass bigicon"></span> or <span class="grain bigicon"></span>： 攻方每顆骰子點數 +1。</p>
+				</div>
+			{{/4.III}}
+			{{#4.II}}
+				<div class="note col-md-3 col-xs-6">
+					<h2>收入範例：</h2>
+					<p>除了首都外，卡蜜兒尚控制2 片森林、3 片草原、1 片山脈和2 座城市。他獲得$70 = $20（首都）+$40（8 片版塊各$5）+$10（3 種不同地形）。</p>
+				</div>
+			{{/4.II}}
+			{{#4.III}}
+				<div class="note col-md-3 col-xs-6">
+					<h2>攻擊範例：</h2>
+					<p>如果攻擊者將1個部隊移到有對手的地形上，攻擊與防守的玩家各移除地形上1個部隊。重覆直到守方沒有剩餘部隊為止，地形變為中立。</p>
+				</div>
+			{{/4.III}}
+		{{/4}}
+		{{#5}}
+			<div class="note col-md-3 col-xs-4">
+				<h2>探索範例：</h2>
+				<img src="img/exploring-example.png" style="width: 100%">
+			</div>
+			{{#5.II}}
+				<div class="note col-md-3 col-xs-4">
+					<h2>收入範例：</h2>
+					<p>瑞秋在第一輪中探索了8 片板塊，並在6 片板塊上率先放了村落。她的收入為$90 = $20（首都）+$40（8 個收入片來自「探索」）+$30（6 個收入片來自「率先村落」）。</p>
+				</div>
+			{{/5.II}}
+		{{/5}}
+		{{#6}}
+			<div class="note col-md-4 col-xs-6">
+				<h2>道路：</h2>
+				<p>玩家需要一定數量的正常狀村民在1或2個地形版塊上，才能以建造道路連接兩地。（取決於兩片板塊中較貴者）</p>
+				<table>
+					<tr><th><span class="city bigicon"></span> / <span class="mountain bigicon"></span></th><th><span class="forest bigicon"></span> / <span class="desert bigicon"></span></th><th><span class="grain bigicon"></span> / <span class="grass bigicon"></span></th></tr>
+					<tr><td>3 位村民</td><td>2 位村民</td><td>1 位村民</td></tr>
+				</table>
+				<p>此外，兩地間每有一條其他人的道路，玩家便須增加1 名村民來建造道路。</p>
+			</div>
+
+			{{#6.I}}
+				<div class="note col-md-4 col-xs-6">
+					<h2>最終計分：</h2>
+					<p>玩家依據地形計算板上每種地形的數量得分。</p>
+					<table>
+						<tr><th><span class="city bigicon"></span> / <span class="mountain bigicon"></span></th><th><span class="forest bigicon"></span> / <span class="grain bigicon"></span> / <span class="grass bigicon"></span></th><th><span class="desert bigicon"></th></tr>
+						<tr><td>3 VP</td><td>2 VP</td><td>1 VP</td></tr>
+					</table>
+					<p>除此之外，每有一套完整的地形組合：城市、草原、農田、樹林、山脈各一片，玩家便再得3 分（無須沙漠）。</p>
+					<h2>最終計分範例：</h2>
+					<p>安妮的道路一共連接了5 座城市、4 片草原、2 片森林、5 片農田、4 片山脈和3 片沙漠，她一共獲得58 分=27（5 座城市+4 片山脈）+22（4 片草原+2 片森林+5 片農田）+3（3 片沙漠）+6（2 套，沙漠不計）。</p>
+				</div>
+			{{/6.I}}
+
+			{{#6.II}}
+				<div class="note col-md-3 col-xs-4">
+					<h2>收入範例：</h2>
+					<p>安妮透過她的道路連接了2 座城市、1 片草原、2 片樹林、2 片農田和1 片山脈。她因此獲得$75=$20（首都）+$10（1座非首都城市）+$25（1 片草原+2 片樹林+2 片農田）+10（1 片山脈）+$10（1 套）。請留意第三片樹林因城市只有2 座而無法成為對應的腹地，故不會帶來額外收入。</p>
+				</div>
+			{{/6.II}}
+		{{/6}}
+		{{#7.I}}
+			<div class="note col-md-4 col-xs-8">
+				<h2>計分：</h2>
+				<table>
+					<tr><th></th><th><span class="city bigicon"></span></th><th><span class="grass bigicon"></span></th><th><span class="forest bigicon"></span></th><th><span class="grain bigicon"></span></th><th><span class="mountain bigicon"></span></th><th><span class="desert bigicon"></th></tr>
+					<tr><th>最多數</th><td>10 VP</td><td>10 VP</td><td>9 VP</td><td>8 VP</td><td>7 VP</td><td>6 VP</td></tr>
+					<tr><th>次多數（不適用於2人遊戲）</th><td>6 VP</td><td>6 VP</td><td>5 VP</td><td>4 VP</td><td>3 VP</td><td>2 VP</td></tr>
+				</table>
+				<p>不只一人取得多數時，所有取得多數的玩家少拿2 分（2 人遊戲亦適用），所有次多數的玩家則不得分。不只一人取得次多數時，則所有取得次多數的玩家都拿到表列分數。</p>
+				<p><b>計分範例：</b> 在一場3 人遊戲中，卡蜜兒在城市與森林是多數，山脈則是次多數。她獲得22 分，因此必須移除5 名村民，但她在地圖上只有4 名，故他先移除她所有的村民後，再移除一座村落。由於她的村落都與首都保持連通，他可以選擇其中任何一座移除。</p>
+			</div>
+		{{/7.I}}
+		{{#7.II}}
+			<div class="note col-md-4 col-xs-8">
+				<h2>收入：</h2>
+				<p>針對玩家取得多數（或同為多數）的地形，每一片板塊都為玩家帶來$10，而每種地形能讓玩家獲得的金額上限則如下表所示。</p>
+				<table>
+					<tr><th><span class="city bigicon"></span></th><th><span class="grass bigicon"></span></th><th><span class="forest bigicon"></span></th><th><span class="grain bigicon"></span></th><th><span class="mountain bigicon"></span></th><th><span class="desert bigicon"></th></tr>
+					<tr><td>最多 $50</td><td>最多 $50</td><td>最多 $45</td><td>最多 $40</td><td>最多 $35</td><td>最多 $30</td></tr>
+				</table>
+				<p>不只一人取得多數時，所有取得多數的玩家同樣得到不最過最多金額的收入。</p>
+				<p><b>收入範例：</b> 卡蜜兒（白色）在草原（2 片）與保羅（藍色）同為多數，且在農田（5 片）也是多數。她獲得$80 = $20（首都）+$20（2片草原）+$40（5 片，但農田上限為$40）。最後一片農田讓她取得多數，但是可惜未能為她帶來實質的收入。</p>
+			</div>
+		{{/7.II}}
+		{{#7.III}}
+			<div class="note col-md-4 col-xs-8">
+				<h2>最終計分：</h2>
+				<p>玩家在某地形上為多數或同為多數，他（及同為多數的玩家）都能獲得下表所列的額外分數。</p>
+				<table>
+					<tr><th><span class="city bigicon"></span></th><th><span class="grass bigicon"></span></th><th><span class="forest bigicon"></span></th><th><span class="grain bigicon"></span></th><th><span class="mountain bigicon"></span></th><th><span class="desert bigicon"></th></tr>
+					<tr><td>6 VP</td><td>6 VP</td><td>5 VP</td><td>4 VP</td><td>3 VP</td><td>2 VP</td></tr>
+				</table>
+				<p><b>最終計分範例：</b> 卡蜜兒在森林和山脈是多數，她額外獲得8 分。</p>
+			</div>
+		{{/7.III}}
+		{{#8}}
+			<div class="note col-md-3 col-xs-6">
+				<h2>製造所：</h2>
+				<p>每片陸地板塊上最多只能有一座製造所。依據地形的不同，玩家需要指定數量的正常狀態村民在該處才能興建製造所，數量詳見下表。</p>
+				<table>
+					<tr><th><span class="grass bigicon"></span> / <span class="grain bigicon"></span></th><th><span class="forest bigicon"></span> / <span class="water-adjacent bigicon"></span>*</th><th><span class="mountain bigicon"></span></th></tr>
+					<tr><th>1 位村民</th><th>2 位村民</th><th>3 位村民</th></tr>
+				</table>
+				<p>* 在緊鄰水域的板塊上，玩家可以興建魚貨製造所（沙漠亦可）。</p>
+			</div>
+
+			{{^8.III}}
+				<div class="note col-md-3 col-xs-6">
+					<h2>交易所：</h2>
+					<p>如果玩家或公司蓋的不是該城市的第一棟交易所，依據玩家/公司蓋的是該城市的第幾棟交易所，他將需支付以下費用給銀行（請參照下表）。</p>
+					<table>
+						<tr><th>第一棟</th><th>第二棟</th><th>第三棟</th><th>第四棟</th></tr>
+						<tr><td>$0</td><td>$10</td><td>$20</td><td>$30</td></tr>
+					</table>
+				</div>
+			{{/8.III}}
+
+			{{#8.I}}
+				<div class="note col-md-4 col-xs-6">
+					<h2>最終計分：</h2>
+					<p>玩家每有一棟交易所，就有2分。（首都內的總部也計算在內）。此外，玩家可從貨物得分，將所有計分的貨物組成若干套，每套中每種貨物最多只能包含1 份，每套的分數則請見下表。</p>
+					<table>
+						<tr><th>貨物種類</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr>
+						<tr><th>總分</th><td>1 VP</td><td>3 VP</td><td>6 VP</td><td>10 VP</td><td>15 VP</td></tr>
+					</table>
+					<p><b>最終計分範例：</b>保羅有5 棟交易所（包含首都內的總部），因此最多可以讓6 份貨物計分。他有9 棟交易所與9 份貨物（3 份麥子、3 份牛、2 份魚和1 份木頭）。他將1 份麥子+1 份牛換成1 份鐵礦。他總計獲得26分=10（5 棟交易所，含首都）+15（1 套5 種貨物）+1（1 份麥子）。他至多能讓6 份貨物計分，多餘的1 份牛和1 份魚不列入計分。</p>
+				</div>
+			{{/8.I}}
+			{{#8.II}}
+				<div class="note col-md-4 col-xs-6">
+					<h2>賣貨：</h2>
+					<p>玩家將所有賣出的貨物組成若干套，每套中每種貨物最多只能包含1 份。每套貨物能為玩家帶來的收入，請見下表。</p>
+					<table>
+						<tr><th>貨物種類</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr>
+						<tr><th>每套收入</th><td>$10</td><td>$25</td><td>$45</td><td>$70</td><td>$100</td></tr>
+					</table>
+					<p><b>收入範例：</b> 保羅有5 棟交易所（含首都），因此可以賣最多6 份貨物。他有8 座製造所，所以獲得8 份貨物（3 份麥子、2 份牛、2 份魚和1 份木頭）。他還缺少第五種貨物，因此他將1 份麥子+1 份牛換成1 份鐵礦。他總計獲得$130 = $20（首都）+$100（1 套5 種貨物）+$10（1 份麥子）。他至多只能賣6 份貨物，因此多餘的魚留在他面前。</p>
+				</div>
+			{{/8.II}}
+		{{/8}}
+		{{#9.I}}
+			<div class="note col-md-12 col-xs-12">
+				<p><b>股利計算：</b> 公司本回合每收入$10，每股便發放$1 股利（總裁股視為兩股，得$2 股利）。</p>
+				<p><b>範例：</b> 綠色公司本輪收入$68，故發放每股$6 股利。卡蜜兒持有4張綠色公司股票，她是該公司唯一的股東（所以其中一張是「總裁股」），故拿$30。剩餘的$38 留做公司的保留盈餘。</p>
+			</div>
+		{{/9.I}}
+		{{#9.II}}
+			<div class="note col-md-12 col-xs-12">
+				<p><b>股利計算：</b> 公司每收入$20 元便發放$1 股利（總裁股視為兩股，得$2股利）。</p>
+			</div>
+			<div class="note col-md-8 col-xs-8">
+				<p><b>最終計分時，依據公司的分數排名：</b>各公司再獲得以下額外分數。</p>
+				<table>
+					<tr><th>第一名</th><th>第二名</th><th>第三名</th><th>第四名</th><th>第五名</th></tr>
+					<tr><td>5 VP</td><td>3 VP</td><td>2 VP</td><td>1 VP</td><td>0 VP</td></tr>
+				</table>
+			</div>
+			<div class="note col-md-4 col-xs-4">
+				<p>平手時，平手的公司將對應名次的分數加起來均分，小數點無條件進位。</p>
+				<p><b>範例：</b> 如果兩家公司並列第二名，每家公司得到額外3分 = (3 + 2) / 2.</p>
+			</div>
+			
+			{{#2.I}}
+				<div class="note col-md-4 col-xs-4">
+					<img src="img/example-2-ii.png" style="width: 100%">
+					<h2>收入範例：</h2>
+					<p>在綠色公司的回合中，他率先在1 片草原、1 片森林和4 號城市上設置村落；此外，他也在1 號城市上設置村落，而該處已經有瑞秋的村落。他在兩座城市的城市牌的上方各擺1 名他的村民。在收入階段，保羅一共獲得$90=$20（首都）+$20（農田、森林和4 號城市的村落）+$50（因為這是他第二和第三位到城市牌上的村民），最後，他將這兩位村民移動到城市牌的下方。</p>
+				</div>
+			{{/2.I}}
+			{{#4.I}}
+				<div class="note col-md-3 col-xs-6">
+					<h2>收入範例：</h2>
+					<p>除了首都外，綠色公司尚控制2 片森林、3 片草原、1 片山脈和2 座城市。他獲得$70 = $20（首都）+$40（8 片版塊各$5）+$10（3 種不同地形）。</p>
+				</div>
+			{{/4.I}}
+			{{#5.I}}
+				<div class="note col-md-3 col-xs-4">
+					<h2>收入範例：</h2>
+					<p>綠色公司在第一輪中探索了8 片板塊，並在6 片板塊上率先放了村落。她的收入為$90 = $20（首都）+$40（8 個收入片來自「探索」）+$30（6 個收入片來自「率先村落」）。</p>
+				</div>
+			{{/5.I}}
+			{{#6.I}}
+				<div class="note col-md-3 col-xs-4">
+					<h2>收入範例：</h2>
+					<p>綠色公司透過他的道路連接了2 座城市、1 片草原、2 片樹林、2 片農田和1 片山脈。她因此獲得$75=$20（首都）+$10（1座非首都城市）+$25（1 片草原+2 片樹林+2 片農田）+10（1 片山脈）+$10（1 套）。請留意第三片樹林因城市只有2 座而無法成為對應的腹地，故不會帶來額外收入。</p>
+				</div>
+			{{/6.I}}
+			{{#7.I}}
+				<div class="note col-md-4 col-xs-8">
+					<h2>收入：</h2>
+					<p>針對玩家取得多數（或同為多數）的地形，每一片板塊都為玩家帶來$10，而每種地形能讓玩家獲得的金額上限則如下表所示。</p>
+					<table>
+						<tr><th><span class="city bigicon"></span></th><th><span class="grass bigicon"></span></th><th><span class="forest bigicon"></span></th><th><span class="grain bigicon"></span></th><th><span class="mountain bigicon"></span></th><th><span class="desert bigicon"></th></tr>
+						<tr><td>最多 $50</td><td>最多 $50</td><td>最多 $45</td><td>最多 $40</td><td>最多 $35</td><td>最多 $30</td></tr>
+					</table>
+					<p>。不只一家公司取得次多數時，則所有取得次多數的公司都拿到不超過上限的金額。</p>
+					<p><b>收入範例：</b> 綠色公司在草原（2 片）與藍色公司同為多數，且在農田（5 片）也是多數。綠色公司獲得$80 = $20（首都）+$20（2片草原）+$40（5 片，但農田上限為$40）。最後一片農田讓她取得多數，但是可惜未能為公司帶來實質的收入。</p>
+				</div>
+			{{/7.I}}
+			{{#8.I}}
+				<div class="note col-md-4 col-xs-6">
+					<h2>賣貨：</h2>
+					<p>玩家將所有賣出的貨物組成若干套，每套中每種貨物最多只能包含1 份。每套貨物帶來的收入請見下表。</p>
+					<table>
+						<tr><th>貨物種類</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr>
+						<tr><th>每套收入</th><td>$10</td><td>$25</td><td>$45</td><td>$70</td><td>$100</td></tr>
+					</table>
+				</div>
+			{{/8.I}}
+		{{/9.II}}
+		{{#9.III}}
+			<div class="note col-md-8 col-xs-8">
+				<p><b>最終計分時的額外分數：</b> 玩家的公司按分數排名，再得到額外分數。</p>
+				<table>
+					<tr><th></th><th>第一名公司</th><th>第二名公司</th><th>第三名公司</th><th>第四名公司</th></tr>
+					<tr><th>2 ♟</th><td>3 VP</td><td>0 VP</td><td></td><td></td></tr>
+					<tr><th>3 ♟</th><td>3 VP</td><td>1 VP</td><td>0 VP</td><td></td></tr>
+					<tr><th>4 ♟</th><td>4 VP</td><td>2 VP</td><td>1 VP</td><td>0 VP</td></tr>
+				</table>
+			</div>
+			<div class="note col-md-3 col-xs-4">
+				<p>平手時，平手的公司將對應名次的分數加起來均分，小數點無條件進位。</p>
+				<p><b>範例：</b> 在一場四人遊戲中，如果有兩家公司並列第二名，它們各獲得 (2+1)/2=2 分（無條件進位）。</p>
+			</div>
+		{{/9.III}}
+	</div>
+</script>
+<script id="template-phase12" type="x-tmpl-mustache">
+	{{#company}}
+		<div class="row section">
+			<div class="col-md-2 col-xs-2 mod9"><h1>Share Round</h1></div>
+			<div class="col-md-10 col-xs-10">
+				<p>在股份輪時，玩家可以選擇執行： <b>股票交易， 跳過或退出</b>。</p>
+				<p><b>股票交易：</b> 在同一個股份輪中，玩家可以交易任意種股票，但是只能買或賣同一種股票！</p>
+				<p>
+					<b>購買股票：</b> 股票的購買價為現價，請見股價板，錢則付給銀行；這與玩家是和銀行或是和公司購買股票無關。{{#9.I}}如果公司還有持股，玩家必須向公司購買，公司從銀行得到等同於股票票面價的金錢（初始價值）。否則，{{/9.I}}{{^9.I}}T{{/9.I}}玩家從銀行購買股票。
+					為了易於辨識，請將購入的股票亮面朝上放在自己面前，以提醒玩家不能在本回股份輪中出售該公司的股票。對於每家公司，每位玩家最多只能持有其一半的股份。
+				</p>
+				<p>
+					<b>創立公司：</b> 要購買某家公司的第一張股票，該股票必須是『總裁股』，玩家必須支付兩倍的票面價（總裁股視為2股），玩家同時成為公司總裁，並創立了該公司。
+					請在此時將該公司的股價設為票面價，在股價板上標記出來（必要時，請疊放在其他原有的指示物上）。 {{^mapnum.1}}{{^mapnum.2}}{{^mapnum.3}}在首個股份輪時，所有總部設在地圖中央的城主上。{{/mapnum.3}}{{/mapnum.2}}{{/mapnum.1}}{{^mapnum.4}}{{^mapnum.5}}總裁選擇公司總部所在地。{{/mapnum.5}}{{/mapnum.4}} 在公司輪 (BR) 玩家執行他的行動。
+				</p>
+				{{#4}}{{^8.I}}{{^8.II}}<p><b>安全條款：</b> 每家公司在完成它的第一個公司輪之前不能被攻擊。</p>{{/8.II}}{{/8.I}}{{/4}} 
+				<p>
+					<b>如往後的股份輪建立：</b> 如股票公司在往後的股份輪才建立，玩家可以設置他的首都{{^mapnum.1}}{{^mapnum.2}}{{^mapnum.3}}於任何有1個其他公司的村落的城市{{/mapnum.3}}{{/mapnum.2}}{{/mapnum.1}}{{^mapnum.4}}{{^mapnum.5}}於任何非其他玩家首都的城市上{{/mapnum.5}}{{/mapnum.4}}. 
+					{{#4}}{{^8.I}}{{^8.II}}。如果一家新設的公司選擇一個有其他公司部隊的地方作為首都，這些部隊將自動被摧毀！{{/8.II}}{{/8.I}}{{/4}}
+				</p>
+				<p>
+					<b>成為總裁：</b> 只要玩家擁有公司最多數的股份，就能保持總裁身份。（相同數量不算）。 任何時候，當有其他玩家持有該公司的股份比當前玩家多時，總裁易主！其他玩家用兩張該公司股票，交換當前玩家的總裁股。
+					若多位玩家股份相同，由順時鐘方向最接近總裁的玩家成為新任總裁。
+				</p>
+				<p>
+					<b>賣出股份：</b> 股票的售價為現價，請見股價板。無論賣多少張股票，凡是有股票被售出的公司，股價下跌$10。
+					總裁不得出售總裁股。但在別的玩家出售股份行動中，他能用總裁股和新成為總裁的玩家換取兩張該公司股票。
+					{{#9.I}}對於每家公司，所有玩家合計最多只能賣一半的股份給銀行。 {{/9.I}}
+					{{#9.II}}所有一般股都可賣給銀行（只有總裁股必須留在某位玩家面前）。 {{/9.II}}
+					當玩家在股份輪出售股票時，他從公司的股票版拿取一個村民標記放到自己面前，以提示自己在本輪不能購買該公司的股票。
+				</p>
+				<p><b>跳過：</b> ：在同一個股份輪中，只要尚無人退出，輪到玩家時，玩家可以重複跳過，也可以重新加入交易（在輪到玩家的時候──依順時鐘順位）。</p>
+				<p>
+					<b>退出：</b> 如果玩家最先選擇退出，他將起始玩家牌拿到自己的面前（打叉的那面朝上），這將讓他成為下一個股份輪的起始玩家。
+					一旦有人退出，之後的玩家便只能交易或退出。當所有人都退出（或跳過）時，本次股份輪結束。
+				</p>
+				<p>
+					<b>股份輪的完結：</b> 一家公司的股票若全部為玩家所有，該公司股價上漲$10。{{#9.II}}，<b>及</b>在一個股份輪中，被購買最多張股票的公司，其股價上漲$10（股價有可能在同一回提升兩次）{{/9.II}}。
+					將所有亮面向上的股票翻到背面，並將所有放在玩家面前的村民歸還給該公司。
+				</p>
+			</div>
+		</div>
+	{{/company}}
+
+	{{#capture}}
+		{{#3}}{{^3.III}}{{^9.I}}{{^7.I}}
+			<p>遊戲開始時，所有玩家利用起始金錢出價暗標順位（出價$0也可）。由出價高者先選，他可以選擇玩家順位{{^9.II}}{{^mapnum.1}}{{^mapnum.2}}{{^mapnum.3}}，所有玩家都將首都設於地圖中央的1 號城市上。{{/mapnum.3}}{{/mapnum.2}}{{/mapnum.1}}{{^mapnum.4}}{{^mapnum.5}}及設置首都位置。{{/mapnum.5}}{{/mapnum.4}}{{/9.II}}{{#9.II}}適用於首個股份輪上。{{/9.II}}平手時請隨機決定由誰先選，後選者另得$2作補償。當三人平手，隨機決定後，第三位選擇的玩家視同「後選兩次」，得$4作補償。</p>
+			{{#9.II}}<p>，在第一個「公司輪」中，每家公司的順位為各公司創立的逆順序。若有公司在之後的「股份輪」才被創立，則它在創立後的下一個「公司輪」中，一次性地成為首家！</p>{{/9.II}}
+			<p>從第二輪開始，依照前一輪的收入高低決定新一輪{{owner}}的順位，由收入高者順位在先，平手時，由上一輪較後的{{owner}}先。{{owners}}依照新的順位與前一輪收入來繳稅，首家支付前一輪收入的20%給銀行，尾家0%，其他人10%，請見<b>計算稅項</b>。基於首家的稅率較高，首家的淨收入有可能比第二家低。</p>
+		{{/7.I}}{{/9.I}}{{/3.III}}{{/3}}
+		{{#7.I}}
+			{{^9.II}}
+				<p>在遊戲開始時，隨機決定玩家順位，並依據順位玩家各將 1 名村民放到第一張順位牌上。{{^mapnum.1}}{{^mapnum.2}}{{^mapnum.3}}所有玩家的首都都必需要設在地圖中央的城市。{{/mapnum.3}}{{/mapnum.2}}{{/mapnum.1}}{{^mapnum.4}}{{^mapnum.5}}玩家逆順序選擇首都位置。{{/mapnum.5}}{{/mapnum.4}}</p>
+			{{/9.II}}
+			{{#9.II}}
+				<p>在第一個「公司輪」中，每家公司的順位為各公司創立的<b>逆順序</b>。若有公司在之後的「股份輪」才被創立，則它在創立後的下一個「公司輪」中，一次性地成為首家。如有多於一家公司創立，則依創立的逆順序！</p>
+			{{/9.II}}
+			<p>當所有的{{owners}}完成各自的一輪後，將會重新決定{{owner}}順序。第二輪時，請依據{{owner}}順位將村民放到第二張順位牌上。從第三輪開始，請依據{{owner}}順位將村民分別放到面朝下計分牌上，每張放一名村民。</p>
+			<p>每輪開始時，如果{{owner}}皆尚未得分，將上一輪的{{owner}}順位對調即為這一輪的{{owner}}順位。若有{{owner}}已得分，則分數低者順位在先；平手時，平手{{owner}}中上一輪順位在後的本輪在先，上一輪順位在先的本輪在後。</p>
+			{{#3.II}}<p>從第2輪開始，稅金依據收入高低決定，但順位則依據分數高低決定。若最高收入平手，由順位將變為第一的玩家支付20% 稅率。若最低收入平手，由順位將變為最後的玩家支付0% 稅率。</p>{{/3.II}}
+		{{/7.I}}
+		{{#9.III}}{{^3}}{{^7.I}}
+			<p>
+				在遊戲開始時，隨機決定玩家順位。{{^mapnum.1}}{{^mapnum.2}}{{^mapnum.3}}所有首都設在地圖中央城市上。{{/mapnum.3}}{{/mapnum.2}}{{/mapnum.1}}{{^mapnum.4}}{{^mapnum.5}}玩家依逆順序設置首都。{{/mapnum.5}}{{/mapnum.4}} 
+				從第二輪起，每輪開始時將重新決定玩家順位：依據前一輪收入，由收入低者順位在前。平手時，平手玩家中前一輪順位在後者本輪在先。
+			</p>
+		{{/7.I}}{{/3}}{{/9.III}}
+		{{#company}}{{^3.I}}{{^7.I}}
+			<p>股份公司的順位按照股票的價錢由高至低排列。平手時，跟股價標記較上者優先。</p>
+			{{#3.II}}
+				<p>從第二輪後，每家公司按照收入繳稅，從多到少：首家支付前一輪收入的20%給銀行，尾家0%，其他人10%，請見<b>計算稅項</b>。如平手，本回較前順位的公司繳較高的稅率。公司順位繼續依照股票價值決定。</p>
+				<p>公司使用公司資產付稅，若無法全額支付或是破產了，該公司用盡它的資產來付稅，該公司總裁毋須代付未支付的稅金！</p>
+			{{/3.II}}			
+		{{/7.I}}{{/3.I}}{{/company}}
+	{{/capture}}
+	{{#hascapture}}
+		<div class="row section">
+			<div class="col-md-2 col-xs-2"><h1>階段 1： {{^company}}玩家{{/company}}{{#company}}公司{{/company}}順位</h1></div>
+			<div class="col-md-10 col-xs-10">{{{captured}}}</div>
+		</div>
+	{{/hascapture}}
+
+
+	{{#3}}{{^3.III}}
+		<div class="row section">
+			<div class="col-md-2 col-xs-2 mod3"><h1>階段 2：特權</h1></div>
+			<div class="col-md-10 col-xs-10">
+				<p>從第二輪開始，若前一輪有未售出的特權，將價格標記移到它們的右側，使這些特權的起標價降到$0。接著，翻開與{{owner}}人數相等的新特權，除非待售的特權牌總量到達上限： 4 (2♟), 5 (3♟), 6 (4♟) 或 7 （5 家公司）。新的特權請補在價格標記的右側，它們的起標價為$20。</p>
+				<p>現在，請由左至右，一次一張，依序拍賣特權。{{^company}}從首家開始，玩家依順時鐘方向輪流出價或退出，直到剩一人未退出為止{{/company}}{{#company}}由各公司總裁依公司順位來出價競標，依順時鐘方向輪流出價或退出，直到剩一家公司未退出為止{{/company}} 一旦退出，{{owner}}便不得再參與該特權的競標，須待下一張特權開始競標時，才能再次出價。得標者{{#company}}從中標公司{{/company}}支付標金給銀行，並將該特權置於自己{{^company}}面前{{/company}}{{#company}}公司資產面前 {{/company}}。若一特權起標價為$20，但沒有任何{{owners}}出價，該特權依然留在競標列中；若一特權起標價為$0 但無{{owners}}出價，將其移出遊戲！</p>
+				<p>{{owner}}每回合可以購買任意數量的特權，但每種特權他只能擁有一張。所有特權的效應在購得後立即生效。</p>
+			</div>
+		</div>
+	{{/3.III}}{{/3}}
+</script>
+<script id="template-phase3abcd" type="x-tmpl-mustache">
+	{{#capture}}
+		{{#2}}{{#residents}}
+			<p>{{agent}}在開始自己輪的時候，可以將{{fowns}}首都和{{owns}}在任何其他城市裡的村落交換位置。</p>
+			<p>若{{owner}}在<b>階段3C</b> 中，個人供應區中的村民已不敷使用，或在<b>階段3D/3E/3G</b> 中，個人供應區中的村落不敷使用，{{agent}}可以從地圖上取回不足的數量來使用，無須放上代用品，且可以直接將它（們）放到地圖上。若{{agent}}回收村落來使用，{{agent}}必須同時收回玩家在該板塊上的所有村民。</p>
+		{{/residents}}{{/2}}
+	{{/capture}}
+	{{#hascapture}}
+		<div class="row section">
+			<div class="col-md-2 col-xs-2 mod2"><h1>階段3A：首都</h1></div>
+			<div class="col-md-10 col-xs-10">{{{captured}}}</div>
+		</div>
+	{{/hascapture}}
+
+	{{#9.III}}
+		<div class="row section">
+			<div class="col-md-2 col-xs-2 mod9"><h1>階段3B：股票</h1></div>
+			<div class="col-md-10 col-xs-10">
+				<p>在此階段，如果銀行已經有股票（暗面向上），玩家可以向銀行購買任意張數，收購價為股票的現價，請參閱股票價格板。他將無法再次在本階段賣出這些股票！</p>
+				<p>除此之外，每一輪，玩家總計可以販售一張他的股票予銀行；請將販售的股票暫時以亮面朝上的方式擺到銀行，並依據目前股價，從銀行拿取現金（這不會列入玩家當回合的收入中）。最後，該公司股價下跌$10。玩家不能販售總裁股！玩家可以在<b>他回合中的任何時候</b>販售一張股票，通常是在他需要現金執行動作的時候！</p>
+			</div>
+		</div>
+	{{/9.III}}
+
+	{{#capture}}
+		{{#3.III}}
+			<p>在本階段開始時，如果翻開的特權牌數量少於{{owners}}數，當前{{agent}}則翻開一張新的特權牌，放在特權牌和價格標記的最右側。{{^company}}（2♟： 如果當前的特權牌小於3張，當前玩家翻開1張新的特權牌）。{{/company}}新翻開特權的價格永遠是$20。</p>
+			<p>{{agent}}接著可以購買 1 張特權牌：{{#company}}利用公司資金{{/company}}支付 $20，拿一張在價格標記右側的特權牌，或是免費拿一張在其左側的特權牌。如果玩家未購買任何特權牌，將價格標記放到最右側，讓所有特權牌的費用降到$0；新翻開的特權牌放在價格標記的右方，代表價格是$20。當玩家要翻開的特權，其背後的羅馬數字（I、II、III）比已翻開的特權都還高時，先將價格標記移動到最右側，使得所有羅馬數字較低的特權都在價格標記的左邊（在價格標記左側的特權價格為$0）。</p>
+			<p>{{^company}}每種特權玩家都只能購買一張。{{/company}}{{#company}}每種特權，公司如已經擁有，則總裁不能再購買相同特權牌。{{/company}}特權的效果在購得後便可立即使用。</p>
+		{{/3.III}}
+		{{#1}}
+			<p>接著，{{agent}}可以進行一次升級，將貨艙牌從1格升級成2 格，或是將行動片翻到下一個數字，取得更多行動點，見<b>升級費用</b>。</p>
+		{{/1}}
+		{{#8.III}}
+			<p>從第二輪開始，{{agent}}有N座製造所，{{^company}}他{{/company}}{{#company}}公司{{/company}}每回合最多只能購買 N+2 名村民。</p>
+			<p><b>範例：</b> 如果{{owner}}有4座製造所，{{sagent}}最多只能購買 6 名村民。</p>
+		{{/8.III}}
+		{{#residents}}
+			<p>{{agent}}可以以每個$10的價錢，購買村民{{#company}}（利用公司資產支付）{{/company}}放到地圖上。（需要遵守放置規則）</p>
+		{{/residents}}
+	{{/capture}}
+	{{#hascapture}}
+		<div class="row section">
+			<div class="col-md-2 col-xs-2"><h1>階段3C：購買</h1></div>
+			<div class="col-md-10 col-xs-10">{{{captured}}}</div>
+		</div>
+	{{/hascapture}}
+
+	{{#capture}}{{#residents}}
+		{{#hurry}}<p>村民在移動時，他們總是<b>在趕路</b>。如果他抵達的板塊上至少有 1 位{{fowns}}的疲憊村民，則他不會進入疲憊狀態；換言之，{{agent}}可以繼續移動。</p>{{/hurry}}
+		{{#2.I}}
+			<p>當{{owner}}初次抵達{{^4}}1座{{/4}}{{#4}}未被佔領的{{/4}}城市，將 1 名村民換成1 座村落時，{{sagent}}將該村民放到對應的城市牌上。</p>
+			{{#4}}<p>當{{owner}}初次抵達一位對手的城市（移動1 名村民到該城市上），從{{owns}}供應區拿1 名村民放到對應的城市牌上（重點是玩家的村民造訪該城市，之後的戰鬥結果不會對此造成影響！）。</p>{{/4}} 
+			<p>注意： 遊戲中{{owners}}只須造訪每座城市一次即可。他無須留在該城市直到遊戲結束。若之後玩家將該村落移走{{^4}}，他的村民仍繼續留在該城市牌上。{{/4}}{{#4}}（遷都或是因戰爭被迫遷移！），他的村民仍繼續留在該城市牌上。{{/4}}</p>
+		{{/2.I}}
+		{{#2.II}}{{^1}}
+			<p>當{{owner}}初次抵達{{^4}}1座{{/4}}{{#4}}未被佔領的{{/4}}城市，將 1 名村民換成1 座村落時，{{sagent}}將該村民放到對應的城市牌上。</p>
+			{{#4}}<p>當{{owner}}初次抵達一位對手的城市（移動1 名村民到該城市上），從{{owns}}供應區拿1 名村民放到對應的城市牌上（重點是玩家的村民造訪該城市，之後的戰鬥結果不會對此造成影響！）。</p>{{/4}} 
+			<p>注意： 遊戲中{{owners}}只須造訪每座城市一次即可。他無須留在該城市直到遊戲結束。若之後玩家將該村落移走{{^4}}，他的村民仍繼續留在該城市牌上。{{/4}}{{#4}}（遷都或是因戰爭被迫遷移！），他的村民仍繼續留在該城市牌上。{{/4}}</p>
+		{{/1}}{{/2.II}}
+		{{#4}}
+			<p>所有村民和村落（包含位於首都的總部）都屬於部隊。攻擊時，{{agent}}只能用正常狀態的村民進行攻擊，但防守時，該板塊上所有{{owns}}部隊（村落、首都、正常或疲憊的村民）都會協同防守。</p>
+			<p>
+				一個牌塊上只能有1個{{owner}}的村落。
+				{{^4.III}}
+					{{^2}}如果{{agent}}移動村民到對手的板塊上時，便視為被派去戰鬥，攻擊對手的村落和/或村民。他的村民將進入疲憊狀態，留在該板塊上，暫時無法離開。這個牌塊上的戰爭將在之後的<b>階段3G：戰鬥</b>進行結算。玩家決定結算戰鬥的順序。{{/2}}
+					{{#2}}
+						當{{agent}}移動所需的村民到對手的板塊上時，這些村民進入疲憊狀態，戰鬥立即發生，見<b>戰鬥步驟</b>及<b>骰子結果</b>。如果有最小1個守方部隊留存，攻擊者不能在本回合再次攻擊這個版塊。如果{{agent}}順利淨空或攻下板塊，他可以移動其他正常狀態的村民到該板塊上。
+					{{/2}}
+				{{/4.III}}
+				{{#4.III}}只要有{{agent}}移動村民到對手的板塊上時，戰鬥立即發生，見<b>戰鬥步驟</b>。{{/4.III}}
+			</p>
+			{{#8}}{{^8.III}}<p>城市中不會發生戰鬥；任何{{owners}}都能在城市中擁有至多一座交易所。當計算交易所價格時，在空城市上的交易所也需包括在內。當{{agent}}攻下一片對手的板塊時，{{agent}}同時接收當地的製造所。若一個板塊成為中立，當地的製造所將暫時無主。</p>{{/8.III}}{{/8}}
+			{{^8}}
+				<p>空城市由兵營和民兵防守。</p>
+				{{^4.III}}{{#2}}
+					{{#3}}<p>每當攻擊者成功淨空一個對手城市，玩家需要拆除1座板塊上的工廠。若果攻擊者稍後利用1名村民佔領該城市，他將得到所有板塊上剩下的工廠。</p>{{/3}}
+				{{/2}}{{/4.III}}
+				{{#4.III}}
+					{{#3}}<p>每當攻擊者成功淨空一個對手城市，玩家需要拆除1座板塊上的工廠。若果攻擊者稍後利用1名村民佔領該城市，他將得到所有板塊上剩下的工廠。</p>{{/3}}
+				{{/4.III}}
+				<p>
+					{{#4.I}}當首都被攻擊時，總部視為玩家最後的 3 個部隊。 {{/4.I}}
+					{{#2}}
+						{{^4.I}}當首都被攻擊時，總部視為玩家最後的 3 個部隊。{{/4.I}} 
+						如果有玩家的首都被淨空或攻下，他立即選擇一個他控制的城市做為首都；將該城市的村落換成總部標記。
+						{{#4.I}}被攻下的玩家若無其他城市，遊戲結束，見<b>遊戲結束</b>。{{/4.I}}
+						{{^4.I}}{{^company}}若有玩家只剩下首都一座城市（此外可能還佔領其他非城市的陸地板塊），他的首都不能被攻擊。{{/company}}{{/4.I}}
+						{{#company}}若進攻公司攻佔了防守公司的首都，則進攻公司同時攻下防守公司控制的所有板塊，並將這些板塊上原有的部隊以進攻公司的部隊替換掉。若攻方只淨空守方的首都，無法立刻加派一名村民佔領其首都，則守方喪失所有板塊，但攻方也無法獲得它們。守方視同倒閉，所有玩家失去該公司所有的股票；它可以在之後的「股份輪」被重新創立。{{/company}}
+					{{/2}}
+					{{^4.I}}{{^2}}{{#company}}當首都被攻擊時，總部視為玩家最後的 3 個部隊，見<b>階段 3 G</b>。{{/company}}{{/2}}{{/4.I}}
+					{{^2}}{{^company}}{{^4.I}}別的玩家的首都不能被攻擊。{{/4.I}}{{/company}}{{/2}}
+				</p>
+				{{^4.I}}{{#company}}<p>
+					如果攻方公司淨空守方公司的最後一個首都，它可以立即移入1個正常村民來攻下該首都，並佔領守方控制的所有板塊（將這些板塊上原有的部隊以進攻公司的部隊替換掉）。
+					{{#2.III}} 如果攻方公司淨空守方公司的最後一個首都，它可以立即移入1個正常村民來攻下該首都。{{/2.III}} 
+					如果攻方只淨空守方的首都，守方損失他所有的板塊（即使他們未被佔領）。接著，守方視同倒閉，所有玩家失去該公司所有的股票；它可以在之後的「股份輪」被重新創立。
+					{{#1.1}} 將所有該公司送達的貨物放在一旁，遊戲結束時它們仍會進入計分！{{/1.1}}
+				</p>{{/company}}{{/4.I}}
+			{{/8}}
+		{{/4}}
+		{{#5.I}}<p>{{agent}}可以移動 1 名正常狀態的村民到隔壁的未知區域來探索它，將探索過的村民放回{{fowns}}供應區；若探索到水域，將該村民留在原板塊上，並進入疲憊狀態（躺下）。</p>{{/5.I}}
+		{{#5.II}}
+			{{#2}}<p>{{agent}}可以用 1 名正常狀態村民探索任意數量相鄰的板塊，將探索過的村民放回{{fowns}}供應區；若只探索到水域，將該村民留在原板塊上，並進入疲憊狀態（躺下）。</p>{{/2}}
+			{{^2}}{{#4}}<p>{{agent}}可以移動 1 名正常狀態的村民到隔壁的未知區域來探索它，將探索過的村民放回{{fowns}}供應區；若探索到水域，將該村民留在原板塊上，並進入疲憊狀態（躺下）。</p>{{/4}}{{/2}}
+			{{^2}}{{^4}}<p>{{agent}}可以移動 1 名正常狀態的村民到隔壁的未知區域來探索它，將該村民留在原板塊上，並進入疲憊狀態（躺下）。</p>{{/4}}{{/2}}
+		{{/5.II}}
+		{{#5.III}}<p>{{agent}}可以用 1 名正常狀態村民探索任意數量相鄰的板塊，將探索過的村民放回{{fowns}}供應區；若只探索到水域，將該村民留在原板塊上，並進入疲憊狀態（躺下）。</p>{{/5.III}}
+		{{#5}}
+			<p><b>探索：</b> {{agent}}在選定探索的區域後，依照以下指示的順序擺放六片探險片，直至六片探險片都放完；基於骰子六面出現的機率相等，擺放時可忽略探險片上的數字。</p>
+			<ol>
+				<li><b>城市：</b> 擺放的探險片數量 = 探索區域到最近的城市之間有幾片已經存在的陸地板塊數量。新的城市永遠不會跟其他城市相鄰！</li>
+				<li><b>水域：</b> 擺放的探險片數量 = 探索區域到中央城市之間的最短距離上的板塊數量（含水域和空格）。 如與現有水域相鄰則不放置探險片。新的水域永遠不會跟其他水域相鄰！</li>
+				<li><b>陸地：</b> 依據草原、森林、農田、山脈、沙漠的順序各擺一片，直到擺完為止。</li>
+				<li><b>剩餘探險片：</b> 如果有剩的話，依據城市、水域、草原、森林、農田、山脈、沙漠的順序，在每個已經有至少一片探險片的地形旁加一片，重覆直到擺完為止。這會增加一些區域出現的機率。</li>
+			</ol>
+			<p>之後，{{agent}}擲骰，並依據結果，擺放對應的地形到探索區域。見<b>探索</b>範例。</p>
+			{{#mapnum.1}}<p>{{agent}}只能探索從中央城市往外延伸4 格以內的區域；遵從以上的相鄰規則，玩家不一定會用到所有的城市或水域。</p>{{/mapnum.1}}
+			{{#1}}{{^1.III}}{{^8}}<p>在新發現城市上，依照小圓圈內的符號，在城市上擺4 份對應貨物。</p>{{/8}}{{/1.III}}{{/1}}
+			{{#5.I}}
+				{{#2.III}}<p>
+					{{agent}}結算地形計算板。
+					{{#6.II}}注意： 請用遊戲未用到的配件（如村落）去標記探索。緊記在結算道路網絡時不要計算在內。{{/6.II}}
+					{{#7.II}}注意： 請用遊戲未用到的配件（如道路）去標記探索。緊記在結算地形時不要計算在內。{{/7.II}}
+				</p>{{/2.III}}
+				<p>{{owner}}每探索1片板塊，便立即獲得1 分（包含水域），從公用供應區拿取。接著，在翻開的陸地板塊上放置二枚 1 分（疊在一起）在上面，若為城市，改放四枚 1 分（疊在一起）在上面。 </p>
+				<p>在遊戲中，{{owner}}可以在特定板塊上完成某些行動來取得這些分數圓片：</p>
+				<ol>
+					<li>定居：在一片空的陸地板塊上率先設置村落的{{owner}}獲得其上的 1 分。</li>
+					<li>收成：每片板塊上其餘的 1 分圓片，必須藉由收成行動來獲得（{{agent}}讓他在該板塊上的一名正常狀態村民因收成而進入疲憊狀態），每次收成行動為{{owner}}帶來1 分。如果{{owner}}的村民因其他行動進入疲憊狀態，{{owner}}不會獲得這個分數。</li>
+				</ol>
+
+			{{/5.I}}
+			{{#5.II}}
+				{{#3.I}}<p>{{agent}}在探索後可以從隔壁的板塊上移動{{fowns}}任意數量的正常村民到該板塊上，他們仍保持正常狀態。</p>{{/3.I}}
+				{{#4.I}}<p>因應探索的地形不同，{{owner}}在其上獲得/發現下列東西：<span class="desert icon"></span> 無， <span class="grass icon"></span> 和 <span class="forest icon"></span> 玩家的 1 座村落， <span class="grain icon"></span> 玩家的1 座村落 + 1 名疲憊村民， <span class="mountain icon"></span> 1 位民（在這片山脈上打敗他的{{owner}}將獲得一次性的$20）。 <span class="city icon"></span> 1 位民兵 + 1 座兵營。 {{owner}}不會因發現村落而得到收入！</p>{{/4.I}}
+				{{#2.III}}{{#9.I}}<p>{{agent}}結算地形計算板時，計算該版塊。</p>{{/9.I}}{{/2.III}}
+			{{/5.II}}
+		{{/5}}
+		{{#6}}
+			<p><b>道路：</b> 當{{owner}}在相鄰的兩片板塊上都有他的村落，且其上有對應數量的村民，{{sagent}}便可以在這兩片板塊之間興建道路。所需的村民數量取決於兩片板塊中較貴者；請參見<b>道路</b>。 {{^6.III}}他將其中一名村民換成道路，垂直穿越兩片板塊的共通邊。其餘村民將在原地進入疲憊狀態，他們將在下回合恢復正常狀態。{{/6.III}}{{#6.III}}所有已使用的村民將進入疲憊狀態，他們將在下回合恢復正常狀態。{{/6.III}}</p>
+			{{^6.III}}<p>{{agent}}的道路必須連結成一個連通網路。他的第一條道路必須連接他的首都；之後的道路只要與之前的道路相連接，便可向任意方向延伸。</p>{{/6.III}}
+			{{#6.III}}<p>{{agent}}可在任何板塊上興建道路，他們可以不在他們的首都開始興建，也不必一定要和首都連接。</p>{{/6.III}}
+			{{#4}}
+				<p>
+					{{agent}}用灰色那面興建中立道路，兩個板塊之間只會有1條道路。
+					{{^6.III}}{{agent}}新蓋的道路必須能夠經由他所控制的板塊上的道路連接到{{fowns}}首都。{{/6.III}}
+					{{#6.I}}要將陸地板塊計入地形計算板，{{owner}}{{^company}}必需要是首位{{/company}}{{#company}}必需要是首家公司{{/company}}用1條道路連接到該一片陸地板塊。對於每一座城市，當{{owner}}控制該城市且該城市能夠經由他所控制的板塊上的道路連接到他的首都時，他便可以將其計入他的地形計算板中；換言之，一座城市可能會被多位{{owners}}計算。當{{owner}}蓋他第一條道路時，記得將他的首都計入地形計算板！{{/6.I}}
+					{{#6.II}}當{{owner}}的道路連接一片新板塊，只要該板塊由{{owner}}控制，{{owner}}便將它計入地形計算板（包含{{owns}}首都{{^7}}，但不包含沙漠{{/7}}）)。如果{{owner}}失去一片板塊的控制權，則調整地形計算板上對應的標記，將所有無法再透過他所控制的板塊上的道路連接到他的首都的板塊扣都除。{{/6.II}}
+				</p>
+				<p>{{agent}}把正常狀態村民在{{owns}}板塊上沿著道路移動時，不論移動多遠，村民都不會疲憊。</p>
+				{{^4.III}}<p>當{{agent}}移動村民到敵方板塊上時，只要村民數量足夠，他便可以蓋道路（即使{{^company}}他{{/company}}{{#company}}公司{{/company}}在該板塊上並沒有他的村落，且稍後必須於<b>階段 3 G</b>進行戰鬥）。</p>{{/4.III}}
+			{{/4}}
+			{{^4}}
+				<p>{{agent}}把正常狀態的單位在{{owns}}板塊上沿著道路移動時，不論移動多遠，單位都不會疲憊。</p>
+				{{#6.I}}<p>興建道路以後，{{owner}}主刻在地形版塊上計算所有已連接的板塊（包含首都）。換句話說，每個地形板塊可以被多位{{owners}}計算！</p>{{/6.I}}
+				{{#6.II}}<p>興建道路以後，{{owner}}主刻在地形版塊上計算所有已連接的板塊（包含首都 {{^7}}，但不包含沙漠{{/7}}）。換句話說，每個地形板塊可以被多位{{owners}}計算！每個城市要求不同的地形，{{owner}}的目標是建造他的道路，連接每種地形和城市。</p>{{/6.II}}
+				{{#2}}<p>{{^6.III}}即使{{agent}}變更{{fowns}}首都，他都不能開展新的網絡。{{/6.III}}如果{{agent}}從地圖移除1個村落，連接該板塊的道路更換成中立道路{{^6.III}}，他從地形計算牌塊上移除該版塊{{/6.III}}。首個{{owner}}擁有該道路兩邊板塊的玩家（兩個板塊都有他的1座村落），而且該道路能連接到他已有的道路的話，則將該中立道路換成屬於他的道路。{{^6.III}} 調整地形計算板上對應的標記。{{/6.III}}</p>{{/2}}
+				{{^2}}{{#7.I}}<p>{{^6.III}}即使{{agent}}變更{{fowns}}首都，他都不能開展新的網絡。 {{/6.III}}如果{{agent}}從地圖移除1個村落，連接該板塊的道路更換成中立道路{{^6.III}}，調整地形計算板上對應的標記{{/6.III}}。首個{{owner}}擁有該道路兩邊板塊的玩家（兩個板塊都有他的1座村落），而且該道路能連接到他已有的道路的話，則將該中立道路換成屬於他的道路。{{^6.III}} 調整地形計算板上對應的標記。{{/6.III}}</p>{{/7.I}}{{/2}}
+			{{/4}}
+		{{/6}}
+		{{#7}}{{^6.I}}{{^6.II}}
+			{{^7.II}}
+				<p>每當{{agent}}放置一座村落時，他在地形計算板上調整對應的地形計算標記（包含{{fowns}}首都）。</p>
+			{{/7.II}}
+			{{#7.II}}
+				{{#8}}<p>當{{agent}}興建製造所時，將該板塊計入地形計算板中；若興建魚的製造所，則以原地形計入。此外，當{{agent}}在城市興建交易所時，將該城市計入地形計算板（包含{{owns}}首都）。</p>{{/8}}
+				{{^8}}<p>當{{agent}}放置村落到板塊上時（包含{{owns}}首都）將該板塊計入地形計算板中。</p>{{/8}}
+			{{/7.II}}
+			{{#4}}<p>若{{agent}}攻下其他{{owner}}的一片{{#8}}有製造所的{{/8}}板塊，調整攻守雙方在地形計算板上的標記。</p>{{/4}}
+		{{/6.II}}{{/6.I}}{{/7}}
+		{{#8}}
+			<p><b>製造所：</b> 每片陸地板塊上，每個{{owners}}最多只能有一座製造所。依據地形的不同，{{agent}}需要指定數量的正常狀態村民在該處才能興建製造所，數量詳見<b>製造所</b>。蓋完製造所後，村民將進入疲憊狀態，待下回合恢復正常。{{agent}}請在製造所上擺放{{fowns}}村落，以標示所有權。{{^1}}{{#8.I}}{{agent}}將該貨物面朝上放在{{^company}}玩家面前{{/company}}{{#company}}公司資產面前{{/company}}。{{/8.I}}{{/1}} {{#1}}製造所立即生產1 份貨物，放在製造所上面。{{/1}}</p>
+			{{^8.III}}
+				<p><b>交易所：</b> 當{{agent}}移動 1 名村民進入城市並將他替換成村落時，該村落自動視為{{fowns}}交易所。如果{{agent}}蓋的不是該城市的第一棟交易所，依據{{agent}}蓋的是該城市的第幾棟交易所，{{agent}}將需支付以下費用給銀行，見<b>交易所</b>。如果{{owner}}無法支付，{{sagent}}不能移動村民到該城市。每位{{owner}}只能在每座城市中擁有1棟交易所（首都的總部也是交易所）。</p>
+				{{#4}}<p>城市中沒有戰鬥，城市中可以同時有多名{{owners}}的交易所。兵營也視同交易所，因此在當地興建首個交易所的{{owner}}也須支付費用！</p>{{/4}}
+			{{/8.III}}
+		{{/8}}
+	{{/residents}}{{/capture}}
+	{{#hascapture}}
+		<div class="row section">
+			<div class="col-md-2 col-xs-2"><h1>階段3D：村民</h1></div>
+			<div class="col-md-10 col-xs-10">{{{captured}}}</div>
+		</div>
+	{{/hascapture}}
+</script>
+<script id="template-phase3efgh" type="x-tmpl-mustache">
+	{{#capture}}
+		{{#1}}
+			{{^1.III}}
+				<p>{{agent}}可以利用 1 格貨艙牌裝載 1 份任意種類的貨物，或是 2 名疲憊的村民。他可以在本階段中的任何時候裝卸任意次數的貨物和/或村民，裝卸貨物和/或村民並不會中止貨車的移動。如果他在沒有對應需求的城市或陸地板塊卸貨{{#8}}{{^8.III}}（或沒有最小1間{{fowns}}交易所）{{/8.III}}{{/8}}，該貨物將會留在原地，直到有任何{{owner}}將它運到{{own}}貨車上。</p>
+			{{/1.III}}
+			{{#1.III}}
+				{{#residents}}<p>{{agent}}可以利用 1 格貨艙牌裝載{{#8}}1 份任意種類的貨物，或{{/8}}{{fowns}} 2 名疲憊的村民。 他可以在本階段中的任何時候裝卸任意次數的貨物和/或村民，裝卸貨物和/或村民並不會中止貨車的移動。{{#8}}如果他在沒有對應需求的城市或陸地板塊卸貨（或沒有最小1間{{fowns}}交易所），該貨物將會留在原地，直到有任何{{owner}}將它運到{{own}}貨車上。{{/8}}</p>{{/residents}}
+				{{^residents}}{{#8}}<p>{{agent}}可以利用 1 格貨艙牌裝載 1 份任意種類的貨物。他可以在本階段中的任何時候裝卸任意次數的貨物。如果他在沒有對應需求的城市或陸地板塊卸貨（或沒有最小1間{{fowns}}交易所），該貨物將會留在原地，直到有任何{{owner}}將它運到{{own}}貨車上。</p>{{/8}}{{/residents}}
+			{{/1.III}}
+			<p>{{agent}}將{{fowns}}貨車從一片地圖板塊移動到隔壁的板塊須花費1 行動點；移動到山脈板塊則須花費2 行動點。{{#residents}}{{^4}} 貨車可以通過沒有他所屬村落的板塊（空的板塊或是有其他{{owner}}村落的板塊）{{/4}} 如果{{agent}}將村民放置在一片沒有{{fowns}}村落的板塊上，將其中1 名村民換成1 座{{fowns}}的村落。{{/residents}}</p>
+			{{#6}}
+				<p>{{agent}}在自己的道路上移動{{fowns}}貨車時，每段道路僅需花費0.5 行動點。</p>
+				{{#1.III}}<p>每一輪{{agent}}可以執行以下行動一次：當{{agent}}的貨車停在一片{{owner}}村落的板塊上，且與它相鄰的板塊上也有{{owner}}的村落，{{agent}}可以在這兩片板塊上免費蓋一條道路。道路之興建仍須符合一般規則。</p>{{/1.III}}
+			{{/6}}
+			{{#4}}
+				<p>{{agent}}可以移動{{fowns}}貨車到任何板塊，包括對手的板塊。如果{{fowns}}貨車從{{agent}}自己的板塊上出發，{{agent}}額外獲得1 行動點。本階段中，當{{fowns}}貨車初次移入某對手的板塊時，{{agent}}必須額外支付1 行動點（注意：如果{{agent}}從對手的板塊上出發，或{{agent}}從一位對手板塊移動到同一位對手板塊，{{agent}}不須額外支付行動點）。</p>
+				{{#8}}{{^8.III}}<p>城市為中立區域，不受任何{{owner}}所控制，任何{{agent}}皆可支付1 行動點移入城市。</p>{{/8.III}}{{/8}}
+				<p> 若{{agent}}將貨車移動到沒有{{fowns}}村莊的板塊上，他必須至少讓1 名村民下車，並將該村民換成1 座村莊； 而若{{agent}}移動到對手的板塊上，他必須讓貨車上的所有村民下車，準備戰鬥。{{agent}}不能讓他在對手板塊上的疲憊村民上車。 {{#2}}當貨車結束移動時，立即進行戰鬥。{{/2}}</p>
+			{{/4}}
+			{{#2.II}}{{#residents}}<p>{{agent}}只能藉由移動貨車來造訪城市。在此情況下，當{{agent}}藉由貨車初次拜訪一座城市時，從{{fowns}}供應區將 1 名村民放到對應城市牌的上方。</p>{{/residents}}{{/2.II}}
+			{{^residents}}
+				<p>{{owner}}可以為{{owns}}貨車購買額外臨時行動點，請依據下表支付對應的金額給銀行，見<b>額外行動點價格</b>。</p>
+				{{#2}}{{^2.III}}<p>當{{agent}}藉由貨車拜訪一座城市時，從相應城市拿取村民放到對應城市牌的上方。{{/2.III}}{{/2}}
+				{{#5}}
+					<p>使用貨車探索新的區域。{{agent}}必須移動貨車到新探索的區域上，從一片板塊移動到相鄰的未知區域探索將耗費他 1 行動點，如果探索的區域是山脈，則花費他 2 行動點。如果探索到水域，他仍然要花1行動點，但貨車留在原板塊上。如果他探索到山脈但僅剩1 行動點，且未購買額外行動點，則他花費1 行動點，但貨車停留在原板塊上。</p>
+					<p><b>探索：</b> 在選定探索的區域後，{{agent}}依照以下指示擺放六片探險片，直到他已經放置了6片探險片。</p>
+					<ol>
+						<li><b>城市：</b> 放置探險片的數量 = 探索區域到最近的城市之間有幾片已經存在的陸地板塊。城市不會相鄰！</li>
+						<li><b>水域：</b> 放置探險片的數量 = 探索區域到中央城市之間的最短距離上有幾片板塊（含水域和空格），或者0，如果這和現有水域板塊相鄰。水域不會相鄰！</li>
+						<li><b>陸地：</b> 依據草原、森林、農田、山脈、沙漠的順序各擺一片，直到擺完為止。</li>
+						<li><b>剩餘探險片：</b> 如果有剩的話，依據城市、水域、草原、森林、農田、山脈、沙漠的順序，在每個已經有至少一片探險片的地形旁加一片，直到擺完為止。</li>
+					</ol>
+					<p>之後，{{agent}}擲骰，並依據結果，擺放對應的地形到探索區域，見<b>探索</b>範例。</p>
+					{{#mapnum.1}}<p>{{agent}}只能探索從中央城市往外延伸4 格以內的區域。遵循放置規則，{{agent}}不一定會用到所有的城市或水域。</p>{{/mapnum.1}}
+					{{^1.III}}{{^8}}<p>永遠將城市板塊有貨物的一面朝上，依照小圓圈內的符號，在每座城市擺上4 份對應貨物。</p>{{/8}}{{/1.III}}
+					{{#5.II}}
+						{{#3.I}}<p>{{agent}}在探索後可以從隔壁的板塊上移動{{fowns}}任意數量的正常村民到該板塊上，那些村民仍保持正常狀態。將第一名村民置換成村落。</p>{{/3.I}}
+						{{#4.I}}<p>{{owner}}探索的板塊因地形不同，讓{{owner}}在其上獲得/發現下列東西，雖然他因此獲得/發現的村落，但不會讓{{owner}}得到收入片： <span class="desert icon"></span> 無， <span class="grass icon"></span> & <span class="forest icon"></span> 他的1 座村落， <span class="grain icon"></span> 他的1 座村落+1 名疲憊村民， <span class="mountain icon"></span> 1 位民兵（在這片山脈上打敗他的玩家將獲得一次性的$20） <span class="city icon"></span>1 位民兵+1 座兵營。玩家不會因探索到村落而得到收入！</p>{{/4.I}}
+						{{#2.III}}{{#9.I}}<p>{{agent}}調整他在地形計算板上的標記。</p>{{/9.I}}{{/2.III}}
+					{{/5.II}}
+				{{/5}}
+				<p>如果遊戲需要村落來計分、收入或建築。當{{agent}}移動{{fowns}}貨車到一片板塊時，他可以藉由放置一座村落來完成特殊得分。 {{#7.III}}他在地形計算板上計算對應種類的地形。{{/7.III}} 村落的數量有限，因此他也可以選擇不擺放村落！</p> 
+				<p>注意： 本規則未必適用於本遊戲！ 請查看以下<b>階段 3F</b>（工廠） <b>收入</b> 和 <b> 計分</b>。</p>
+			{{/residents}}
+			{{^1.III}}<p>
+				{{owner}}的目標是將貨物送到有對應需求的城市中。城市會註明當地所需的貨物種類，每種貨物都只需要一份。
+				{{^8.I}}{{^8.II}}
+					{{#1.I}}將{{agent}}送達的貨物面朝上放在{{^company}}自己面前{{/company}}{{#company}}公司資產{{/company}}（將在遊戲結束時計分），並用覆蓋片蓋住該城市上對應的貨物需求，表示該需求已被滿足。{{/1.I}}
+					{{#1.II}}當{{agent}}送貨到某城市時，請將貨物依據送達的順序，面朝上放在貨物價格表的下方，並用覆蓋片蓋住城市上對應的貨物需求，表示該需求已被滿足。如果{{agent}}同時送兩份貨物到某一城市，他決定它們送達的先後順序。{{/1.II}}
+				{{/8.II}}{{/8.I}}
+			</p>{{/1.III}}
+			{{#8}}
+				<p>當{{agent}}興建製造所時，製造所會生產1 份貨物一次。{{agent}}將貨物放在該製造所上，只有製造所擁有者能將這份貨物運走！</p>
+				{{#1.III}}<p>{{agent}}必須將這份貨物送到{{fowns}}交易所，並須遵守{{fowns}}運送量的限制！（城市沒有特定貨物需求）！如果{{agent}}在沒有他的交易所的成市，或已滿足貨品運送需求的版塊上卸下貨品，貨品會留在原地直到任何{{owner}}將他們裝載到他自己的貨車上。</p>{{/1.III}}
+				{{^1.III}}{{^8.III}}<p>{{agent}}必須將這份貨物送到{{fowns}}有交易所的城市上，並須遵守{{fowns}}運送量的限制，也要跟從城市的貨品需求。他將送達的貨物放在交易所上，並用覆蓋片蓋住城市上對應的貨物需求，表示該需求已被滿足。{{#1.II}}（他可以把相應貨品任供應堆，面朝向上放到貨品價格指示板上，以作記錄。）{{/1.II}}{{#8.I}}查看以下<b>最終計分</b>{{/8.I}}{{#8.II}}查看以下 <b>階段 3H：收入</b>{{/8.II}} 關於交易所運送數量。</p>{{/8.III}}{{/1.III}}
+			{{/8}}
+			{{^residents}}{{#1.III}}{{^8}}<p>留意： 在504的絕大部份遊戲中，貨車的貨艙可以運送貨物或村民。只有在本遊戲組合下，玩家不能使用貨艙。</p>{{/8}}{{/1.III}}{{/residents}}
+		{{/1}}
+	{{/capture}}
+	{{#hascapture}}
+		<div class="row section">
+			<div class="col-md-2 col-xs-2 mod1"><h1>階段3E：貨車</h1></div>
+			<div class="col-md-10 col-xs-10">{{{captured}}}</div>
+		</div>
+	{{/hascapture}}
+
+	{{#3}}{{^3.III}}
+		<div class="row section">
+			<div class="col-md-2 col-xs-2 mod3"><h1>階段3F：工廠</h1></div>
+			<div class="col-md-10 col-xs-10">
+				<p>每回合，{{agent}}可以於每個城市購買最多1間工廠，如果{{owner}}有1個村落位於該城市及他能夠支付所需費用的話。請見左面工廠表格。{{#3.I}} 建造工廠時，{{owner}}得到5分。{{/3.I}} 每個城市總計只能容納三棟工廠。
+				<p>{{owner}}用{{owns}}村落標記{{owns}}工廠。如果{{owner}}在單一城市有多棟工廠，{{^company}}他{{/company}}{{#company}}她{{/company}}將工廠疊起來，放在{{owns}}村落下。</p>
+			</div>
+		</div>
+	{{/3.III}}{{/3}}
+
+	{{#capture}}
+		{{^2}}
+			{{#4}}{{^4.III}}
+				<p>如果2個不同{{owners}}的民兵位處同一板塊上，就會發生戰爭。參見<b>戰鬥步驟</b>及<b>擲骰結果</b>。</p>
+				{{#3}}{{^3.III}}{{^8.I}}{{^8.II}}<p>如果攻擊者淨空城市，1個位於其上的工廠會被摧毀。如果攻擊者稍後用1個村民佔領該城市，他得到該城市剩下的所有工廠。</p>{{/8.II}}{{/8.I}}{{/3.III}}{{/3}}
+				{{#8}}{{^8.III}}<p>城市間不會發生戰爭，不同{{owners}}可以在同一板塊上擁有交易所。如果{{agent}}佔領板塊，他同時佔領現有的工廠。如果板塊被淨空，工廠將視為無人佔有。</p>{{/8.III}}{{/8}}
+			{{/4.III}}{{/4}}
+			{{#4.II}}{{#9.I}}<p>如果攻擊方公司佔領防守方首都，他同時佔領防守方的板塊，並將其上的部隊換成自己的。如果她只是淨空了防守方首都，防守方失去所有板塊，那此板塊視為無人佔領。然後，所有玩家失去防守方公司所有的股票而不作補償。防守方公司視為已倒閉，並供玩家於稍後的股份輪再建立。</p>{{/9.I}}{{/4.II}}
+		{{/2}}
+	{{/capture}}
+	{{#hascapture}}
+		<div class="row section">
+			<div class="col-md-2 col-xs-2 mod4"><h1>階段 3G：戰爭</h1></div>
+			<div class="col-md-10 col-xs-10">{{{captured}}}</div>
+		</div>
+	{{/hascapture}}
+
+	{{#capture}}
+		{{#1.II}}
+			<p>首都總是給{{owner}}帶來基本的$20 收入。每次在<b>階段3E</b>運送的每份貨物，會根據貨物的現價給玩家帶來一次收益。{{owner}}依序結算他每份送達的貨物，從第一份貨物開始：依據該貨物的現價拿取收入，將該種貨物的價格向下調整三格，接著將所有其他種類的貨物價格向上調整一格。接著結算第二份貨物的收入，依此類推！貨物價格永遠不會低於$10，也永遠不會高於$140。{{^8.I}}最後， {{agent}} 將所有送達的貨物歸還至公用供應區。{{/8.I}}{{#8.I}}玩家將貨品留在交易所上。（如果他用貨品標記在貨物價錢板上標記已運送貨物，他將那些標記放回公共供應堆。）{{/8.I}}</p>
+			{{#4}}{{^8.I}}<p>如果{{owner}}運送貨物到沒有他村落的城市，他一定要與城市擁有者分享是次收益，每$10收益支付$1。如果是空的城市，則與銀行分享是次收益。</p>{{/8.I}}{{/4}}
+		{{/1.II}}
+		{{#2.II}}
+			<p>首都總是給{{owner}}帶來基本的$20 收入。每次{{owner}}放置村落到空的板塊，視乎板塊類型，都會為{{owner}}帶來一次收益：{{owner}}得到$5：<span class="grass icon"></span>， <span class="forest icon"></span>， <span class="grain icon"></span>， <span class="desert icon"></span>。 {{owner}}得到$10：<span class="city icon"></span> 和 <span class="mountain icon"></span>。此外，在<b>階段3D</b>{{owner}}每放置1個新村民到1張或多張城市牌上，就會得到一次收益。放置首個村民得$10，第2個市民得$20，如此類推。之後，他將新的村民放到相應的城市牌最下方 - 見<b>收入</b>範例。</p>
+			{{#7.I}}<p>如果{{agent}}移除村落後，該板塊再次淨空，則下一位在該處擺放村落的{{owner}}會得到一次性的$5（城市或山脈為$10）收入。</p>{{/7.I}}
+			{{^7.I}}
+				{{#1}}
+					<p>如果{{agent}}移除村落後，該板塊再次淨空，則下一位在該處擺放村落的{{owner}}會得到一次性的$5（城市或山脈為$10）收入。</p>
+				{{/1}}
+			{{/7.I}}
+			{{#4}}<p>如果{{agent}}淨空別的玩家的板塊，則下一位在該處擺放村落的{{owner}}會得到一次性的$5（城市或山脈為$10）收入。如果{{agent}}佔領板塊就會得到該收入。</p>{{/4}}
+		{{/2.II}}
+		{{#3.II}}
+			<p>首都總是給{{owner}}帶來基本的$20 收入。每個自己的工廠帶來$15 收入。{{^company}} 所有{{owners}}將收入暫時放到一旁，直到下個階段1繳稅後才放好。{{/company}}</p>
+		{{/3.II}}
+		{{#4.II}}
+			<p>首都總是給{{owner}}帶來基本的$20 收入。每個屬於自己的額外板塊帶來$5收入。{{owners}}會從不同地形種類板塊獲取額外收入（非城市板塊），見<b>收入</b>範例。</p>
+			<table>
+				<tr><th>不同地形種類的板塊數量</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr>
+				<tr><th>獎勵收入</th><td>$0</td><td>$5</td><td>$10</td><td>$20</td><td>$30</td></tr>
+			</table>
+		{{/4.II}}
+		{{#5.II}}
+			<p>首都總是給{{owner}}帶來基本的$20 收入。每個他探索的板塊（包括水域）帶來 $5 收入。首個在一塊板塊放置村落的玩家得到 $5 收入。為方便檢視，{{agent}}放置1個收入標記到每個已探索板塊及村落，{{^company}}到自己面前{{/company}}{{#company}}到公司資產{{/company}}，見<b>收入</b>範例。</p>
+			{{#2}}<p>如果{{agent}}移除{{fowns}}村落後，該板塊再次淨空，則下一位在該處擺放村落的{{owner}}會得到1個收入標記。</p>{{/2}}
+			{{^2}}{{#7.I}}<p>如果{{agent}}移除{{fowns}}村落後，該板塊再次淨空，則下一位在該處擺放村落的{{owner}}會得到個收入標記。</p>{{/7.I}}{{/2}}
+			{{#4}}<p>如果{{agent}}淨空別的{{owner}}的板塊，則下一位在該處擺放村落的{{owner}}會得到1個收入標記。如果{{agent}}佔領板塊就會得到該收入標記。</p>{{/4}}
+		{{/5.II}}
+		{{#6.II}}<p>首都總是給{{owner}}帶來基本的$20 收入。每個用道路連接到{{owns}}首都的城市得$10。此外，每個{{owns}}已連接城市為{{owns}}帶來金錢，價值視乎地形種類（沙漠除外）：草原、農田、樹林每片$5、山脈每片$10。每有一套完整的地形組合：城市、草原、農田、樹林、山脈各一片，他便再得$10（注意玩家不需連結沙漠），見<b>收入</b>範例。</p>{{/6.II}}
+		{{#7.II}}<p>首都總是給{{owner}}帶來基本的$20 收入。加上如上說明的地形計算板塊的收入，見<b>收入</b>表格及範例。</p>{{/7.II}}
+		{{#8.II}}
+			<p>{{^1}}於本階段，{{owner}}每座製造所製造 1 份貨物，從公用供應區拿取對應貨物放在{{owner}}面前。{{/1}}{{#1}}{{agent}}可以賣出運送到交易所的貨品。{{/1}} 他每有一棟交易所，便可以賣{{^4}} 1 份貨物{{/4}}{{#4}} 2 份貨物{{/4}}到該處。{{^4}}（{{owns}}首都的總部可以賣 2 份）{{/4}}。 {{^1}}之後，他將賣出的貨放回公用供應區。{{/1}}{{#1}}之後，賣出的貨放保留在交易所上。{{/1}}</p>
+			<p>首都總是給{{owner}}帶來基本的$20 收入。出售貨物可以帶來額外收入，見<b>計分</b>表格及範例。 {{^1}}{{agent}}在賣貨之前，可以將任意2 份資源（2 份相同或不同的資源皆可），換成1 份任意資源，以提高販售時的收入。{{agent}}可以先將貨物儲存於{{^company}}自己面前{{/company}}{{#company}}公司資產區{{/company}}，並在往後的回合中販賣。{{/1}}</p>
+		{{/8.II}}
+		{{#9.I}}
+			{{#2.III}}<p>公司可從<b>特殊得分</b>得到收入。</p>{{/2.III}}
+			<p>先將本輪公司的收入暫放一旁，放到公司資產區旁。</p>
+		{{/9.I}}
+		{{#9.II}}
+			{{#1.I}}
+				<p>首都總是給公司帶來基本的$20 收入。每次在<b>階段3E</b>運送的每份貨物，會根據貨物的現價給公司帶來一次收益。公司依序結算他每份送達的貨物，從第一份貨物開始：依據該貨物的現價拿取收入，將該種貨物的價格向下調整三格，接著將所有其他種類的貨物價格向上調整一格。接著結算第二份貨物的收入，依此類推！貨物價格永遠不會低於$10，也永遠不會高於$140。在公司得到收入後，將已運送的貨物放到公司板塊前，以便於最終計分時計算分數。</p>
+				{{#4}}<p>如果公司運送貨物到沒有他村落的城市，他一定要與城市擁有者分享是次收益，每$10收益支付$1。如果是空的城市，則與銀行分享是次收益。</p>{{/4}}
+			{{/1.I}}
+			{{#2.I}}
+				<p>首都總是給公司帶來基本的$20 收入。每次公司放置村落到空的板塊，視乎板塊類型，都會為公司帶來一次收益：公司得到$5：<span class="grass icon"></span>， <span class="forest icon"></span>， <span class="grain icon"></span>， <span class="desert icon"></span>。 公司得到$10：<span class="city icon"></span> 和 <span class="mountain icon"></span>。此外，在<b>階段3D</b>公司每放置1個新村民到1張或多張城市牌上，就會得到一次收益。放置首個村民得$10，第2個市民得$20，如此類推。之後，公司將新的村民放到相應的城市牌最下方 - 見<b>收入</b>範例。</p>
+				{{#1}}
+					<p>如果公司移除村落後，該板塊再次淨空，則下一位在該處擺放村落的公司會得到一次性的$5（城市或山脈為$10）收入。</p>
+				{{/1}}
+				{{#4}}<p>如果公司淨空別的公司的板塊，則下一位在該處擺放村落的公司會得到一次性的$5（城市或山脈為$10）收入。如果公司佔領板塊就會得到該收入。</p>{{/4}}
+			{{/2.I}}
+			{{#3.I}}
+				<p>首都總是給公司帶來基本的$20 收入。每個自己公司的工廠帶來$15 收入。所有公司將收入暫時放到一旁，直到下個階段1繳稅後才放好。</p>
+			{{/3.I}}
+			{{#4.I}}
+				<p>首都總是給公司帶來基本的$20 收入。每個該公司探索的板塊（包括水域）帶來 $5 收入。公司會從不同種類地形板塊獲取額外收入（非城市板塊），見<b>收入</b>範例。</p>
+				<table>
+					<tr><th>不同種類的地形板塊數量</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr>
+					<tr><th>額外收入</th><td>$0</td><td>$5</td><td>$10</td><td>$20</td><td>$30</td></tr>
+				</table>
+			{{/4.I}}
+			{{#5.I}}
+				<p>首都總是給公司帶來基本的$20 收入。每個他探索的板塊（包括水域）帶來 $5 收入。首個在一塊板塊放置村落的公司得到 $5 收入。為方便檢視，公司放置1個收入標記到每個已探索板塊及村落到公司資產，見<b>收入</b>範例。</p>
+				{{#2}}<p>如果公司移除她的村落後，該板塊再次淨空，則下一位在該處擺放首個村落的公司會得到個收入標記。</p>{{/2}}
+				{{^2}}{{#4}}<p>如果公司移除她的村落後，該板塊再次淨空，則下一位在該處擺放首個村落的公司會得到個收入標記。</p>{{/4}}{{/2}}
+			{{/5.I}}
+			{{#6.I}}<p>首都總是給公司帶來基本的$20 收入。每個用道路連接到公司首都的城市得$10。此外，每個公司的已連接城市為她帶來金錢，價值視乎地形種類（沙漠除外）：草原、農田、樹林每片$5、山脈每片$10。每有一套完整的地形組合：城市、草原、農田、樹林、山脈各一片，他便再得$10（注意玩家不需連結沙漠），見<b>收入</b>範例。</p>{{/6.I}}
+			{{#7.I}}<p>首都總是給公司帶來基本的$20 收入。加上如上說明的地形計算板塊的收入，見<b>收入</b>表格及範例。</p>{{/7.I}}
+			{{#8.I}}
+				<p>{{^1}}公司可以出售她製造所已生產的貨物。{{/1}}{{#1}}公司可以出售運送到她交易所的貨物。{{/1}} 他每有一棟交易所，便可以賣 1 份貨物到該處。（公司首都的總部可以賣 2 份）。 {{^1}}之後，賣出的貨放保留在公司資產上。{{/1}}{{#1}}之後，賣出的貨放保留在交易所上。{{/1}}</p>
+				<p>首都總是給公司帶來基本的$20 收入。出售貨物可以帶來額外收入，見<b>計分</b>表格及範例。公司不能在收入階段轉換貨品。</p>
+			{{/8.I}}
+			<p>先將公司的收入分開放置，放到公司資產區旁。</p>
+		{{/9.II}}
+		{{#9.III}}<p>玩家將本輪的收入暫放一旁。待所有玩家取得收入後，最高收入者的公司上漲$20，其他人的公司則上漲$10。最後，將銀行中所有亮面朝上的股票翻到暗面。</p>{{/9.III}}
+
+		{{^company}}{{#3.I}}
+			<p>玩家將本輪的收入暫放一旁，直到他們在下個階段1繳稅為止。</p>
+		{{/3.I}}{{/company}}
+	{{/capture}}
+	{{#hascapture}}
+		<div class="row section">
+			<div class="col-md-2 col-xs-2 mod{{world.1}}"><h1>階段3H：收入</h1></div>
+			<div class="col-md-10 col-xs-10">{{{captured}}}</div>
+		</div>
+	{{/hascapture}}
+</script>
+<script id="template-scoring" type="x-tmpl-mustache">
+	{{#capture}}
+		{{#2.III}}
+			{{#1.I}}<p>五枚5 分。對於每種貨物，率先送達兩份的{{owner}}獲得5 分（請在地圖旁放五種貨物各1 份及5 枚5 分）。</p>{{/1.I}}
+			{{#3.I}}<p>兩枚10 分。率先在三座城市有工廠，以及率先在同一座城市有三棟工廠的{{owner}}各得 10 分（請在地圖旁放工廠及2 枚10 分）。</p>{{/3.I}}
+			{{#4.I}}<p>3、4、5… 分各一份。當{{owner}}征服一座中立城市時，獲得對應分數（將分數放在地形計算板的城市處，由下而上每格放置3、4、5… 分），首先征服一座中立城市獲得3 分，第二位征服一座中立城市的人獲得4 分，依此類推。</p>{{/4.I}}
+			{{#5.I}}<p>六枚5 分。對於每種地形（不含水域），率先探索三片的{{owner}}獲得5 分（將分數放在地形計算板的每種地形下方）。</p>{{/5.I}}
+			{{#6.I}}<p>六枚5 分。對於每種地形（不含水域），率先用道路連接三片該地形的{{owner}}獲得5 分（將分數放在地形計算板的每種地形下方）。</p>{{/6.I}}
+			{{#7.I}}<p>10 分、20 分各一枚。率先控制每種地形各一片的{{owner}}得10 分，率先控制每種地形各兩片的{{owner}}得20 分（將分數放在地形計算板的第一行及第二行上）。</p>{{/7.I}}
+			{{#8.I}}<p>五枚5 分。對於每種貨物，率先擁有三座該種製造所的{{owner}}獲得5 分（請在地圖旁放五種貨物各1 份及5 枚5 分）。</p>{{/8.I}}
+			{{#9.I}}<p>
+				{{#1.II}}五份$50。對於每種貨物，率先送達兩份的公司獲得$50（請在地圖旁放五種貨物各1 份及5份$50）。{{/1.II}}
+				{{#3.II}}兩份$100。率先在三座城市有工廠，以及率先在同一座城市有三棟工廠的公司各得 $100（請在地圖旁放工廠及2份$100）。{{/3.II}}
+				{{#4.II}}$30、$40、$50… 各一份。當公司征服一座中立城市時，獲得對應金錢（將金錢放在地形計算板的城市處，由下而上每格放置$30、$40、$50…），首先征服一座中立城市獲得$30，第二位征服一座中立城市的人獲得$40，依此類推。{{/4.II}}
+				{{#5.II}}六份$50。對於每種地形（不含水域），率先探索三片的公司獲得$50（將金錢放在地形計算板的每種地形下方）。{{/5.II}}
+				{{#6.II}}六枚$50。對於每種地形（不含水域），率先用道路連接三片該地形的公司獲得$50（將金錢放在地形計算板的每種地形下方）。{{/6.II}}
+				{{#7.II}}$100、$200各一份。率先控制每種地形各一片的公司得$100，率先控制每種地形各兩片的公司得$200（將金錢放在地形計算板的第一行及第二行上）。{{/7.II}}
+				{{#8.II}}五份$50。對於每種貨物，率先擁有三座該種製造所的公司獲得$50（請在地圖旁放五種貨物各1 份及5 份$50）。{{/8.II}}
+				這些金錢視為收入。
+			</p>{{/9.I}}
+		{{/2.III}}
+	{{/capture}}
+	{{#hascapture}}
+		<div class="row section">
+			<div class="col-md-2 col-xs-2 mod2"><h1>特殊得分</h1></div>
+			<div class="col-md-10 col-xs-10">{{{captured}}}</div>
+		</div>
+	{{/hascapture}}
+
+	{{#company}}
+		<div class="row section">
+			<div class="col-md-2 col-xs-2 mod9"><h1>階段4：股利</h1></div>
+			<div class="col-md-10 col-xs-10">
+				{{#9.I}}
+					{{#3.II}}<p>每位總裁記錄他們公司本輪的收入，以便計算下輪稅款。</p>{{/3.II}}
+					<p>各公司總裁依序決定要發放股利或保留盈餘。</p>
+					<p><b>發放股利：</b> 股利依據股份數發放給銀行、公司與持股玩家；剩下來的錢則歸公司所有。見<b>計算股利</b>。 該公司股價上漲$10。</p>
+					<p><b>保留盈餘：</b> 將本回合所有收入歸給公司。公司股價不變。</p>
+					<p><b>不論玩家選擇發放股利或是保留盈餘，公司接下來都需要支付維持費用：</b> 每座村落$3，每名村民$1。如果公司剩餘資產不足以支付維持費，公司先付光所有錢，然後由總裁支付剩餘金額。</p>
+				{{/9.I}}
+				{{#9.II}}
+					{{#3.I}}<p>每位總裁記錄他們公司本輪的收入，以便計算下輪稅款。</p>{{/3.I}}
+					<p>依照當輪的收入，收入最高的兩公司股價各漲$10（第一名平手時，所有第一名漲$10，第二名不漲；第二名平手時所有第二名不漲），收入最低或同為最低的公司股價則跌$10。請依據調整前的股價，由高至低，依序調整每家公司的股價指示物。</p>
+					<p>所有公司發放股利給玩家及銀行。總裁將剩餘收入放到公司資產。見<b>計算股利</b>。</p>
+				{{/9.II}}
+			</div>
+		</div>
+	{{/company}}
+
+	{{#capture}}
+		{{#7.I}}
+			<p>從第三輪開始，在{{agent}}的回合結束時將{{fowns}}村民移開，翻開底下的計分牌。如果該計分牌上是<span class="glyphicon glyphicon-ok"></span>符號，則由下位{{agent}}正常進行他的回合。如果該計分牌上寫計分，則遊戲暫時停止，進入計分階段。</p>
+			<p><b>第一&二次計分：</b> 根據地形計算板{{owners}}取得多數的地形來計分，見<b>計分</b>表格及範例。</p>
+			<p><b>第三次計分（最終計分）：</b> 第三張計分牌被翻開時，進行最終計分。根據地形計算板{{owners}}取得多數的部分來計分，見<b>計分</b>表格及範例。所有因此失去最後一回合的{{owners}}在計算以下分數之前，先得到一次性的3 分。</p>
+			<p>每次計分後，將{{owners}}各自的新得分加如先前獲得的分數中。從總分最高的{{owners}}開始，他必須從地圖上移除指定數量的村民（平分時，依照{{owners}}順位進行移除）：{{^9.II}}每3分移除1名自己的村民(2♟) 或 每4分移除1名自己的村民(3♟, 4♟){{/9.II}}{{#9.II}}每4分移除1名自己的村民{{/9.II}} 。若地圖上已無他的村民，他改為移除村落，但剩餘村落的板塊須與{{fowns}}首都相連通。{{owners}}不能移除首都。如果他的村民和村落已全數移除仍不足額，他每少移除1 名村民/ 村落，便扣相應的分。在移除村民/村落後，調整地形計算板上的標記。平分時，依照玩家順位進行。</p>
+		{{/7.I}}
+	{{/capture}}
+	{{#hascapture}}
+		<div class="row section">
+			<div class="col-md-2 col-xs-2 mod7"><h1>階段5：計分與最終計分</h1></div>
+			<div class="col-md-10 col-xs-10">{{{captured}}}</div>
+		</div>
+	{{/hascapture}}
+
+	<div class="row section">
+		<div class="col-md-2 col-xs-2 mod{{world.0}}"><h1>遊戲結束</h1></div>
+		<div class="col-md-10 col-xs-10">
+			{{#1.I}}
+				{{^9.II}}<p>在一輪結束（所有玩家都進行完一回合）後，請檢查所有玩家運送的總貨物量，若總貨物量達19 份(2♟), 21份 (3♟) 或 23份 (4♟)，遊戲立刻結束。</p>{{/9.II}}
+				{{#9.II}}<p>在一輪結束（所有玩家都進行完一回合）後，若 5 家公司合計至少送達25 份貨物，遊戲立刻結束。</p>{{/9.II}}
+			{{/1.I}}
+			{{#2.I}}
+				{{^residents}}
+					<p>當一輪結束時，有至少一位玩家在9 張城市牌上有村民時，遊戲結束。</p>
+				{{/residents}}
+				{{#residents}}
+					{{#4}}
+						{{#9.II}}<p>當一輪結束時，當至少一家公司有4 名村民在城市牌上，遊戲結束。</p>{{/9.II}}
+						{{^9.II}}<p>當一輪結束時，視乎玩家人數，當至少有一位玩家在指定數量的城市牌上有村民時，遊戲結束：7 (2♟)， 6 (3♟) 或 5 (4♟) 張城市牌。</p>{{/9.II}}
+					{{/4}}
+					{{^4}}
+						{{#9.II}}<p>當一輪結束時，至少一家公司有6 名村民在城市牌上，遊戲結束。</p>{{/9.II}}
+						{{^9.II}}<p>當一輪結束時，視乎玩家人數，當至少有一位玩家在指定數量的城市牌上有村民時，遊戲結束：9 (2♟)， 8 (3♟) 或 7 (4♟) 張城市牌。</p>{{/9.II}}
+					{{/4}}
+				{{/residents}}
+			{{/2.I}}
+			{{#3.I}}
+				<p>在一輪結束（所有玩家都進行完一回合）時，請檢查城市中的工廠總數；當總計有20 棟或更多工廠時，遊戲結束。</p>
+			{{/3.I}}
+			{{#4.I}}
+				<p>當以下任何狀況發生時，遊戲在當前玩家的回合結束時立即結束：</p>
+				<ol>
+					<li>在 <b>階段 3C：</b> 他買完供應區中他的村民。</li>
+					<li>在 <b>階段 3D/3G：</b> 他將供應區中最後一座村落放上地圖（若他在其他板塊上攻擊其他玩家，該戰鬥將取消）。</li>
+					{{^8.II}}{{^2}}<li>在 <b>階段 3G：</b> 當前玩家攻下或清空任一對手的首都。若他攻下首都，則他同時攻下該玩家控制的所有板塊；請將該玩家的部隊換成當前玩家的。若當前玩家沒有足夠的村落和村民，他選擇要佔領哪些板塊。若當前玩家只是淨空對手的首都，則對手喪失所有板塊，但當前玩家不會獲得它們。</li>{{/2}}{{/8.II}}
+					{{^8.II}}{{#2}}<li>在 <b>階段 3D：</b> 當前玩家攻下或淨空一位玩家的首都，而該玩家已無任何其他的城市，遊戲立即結束。</li>{{/2}}{{/8.II}}
+				</ol>
+			{{/4.I}}
+			{{#5.I}}
+				<p>在一輪結束（所有玩家都進行完一回合）後，請檢查尚未被探索的板塊數。若尚未被探索的板塊數等於或少於7 片，遊戲結束。</p>
+			{{/5.I}}
+			{{#6.I}}
+				{{#4}}<p>在一輪結束時，若玩家總計蓋出40條或以上道路，遊戲結束。</p>{{/4}}
+				{{^4}}{{#9.II}}<p>在一輪結束時，當至少 1 家公司連接4 片城市板塊，遊戲結束。</p>{{/9.II}}{{/4}}
+				{{^4}}{{^9.II}}<p>在一輪結束（所有玩家都進行完一回合）後，請檢查每位玩家連接的城市數。根據遊戲人數，當至少1 位玩家用他的道路連接指定數量城市板塊時，遊戲便結束： 7 (2♟)， 6 (3♟) 或 5 (4♟) 片城市板塊。</p>{{/9.II}}{{/4}}
+			{{/6.I}}
+			{{#7.I}}
+				<p>遊戲在第三次計分後立即結束，並開始<b>最終計分</b>，見上面。</p>
+				{{^9}}
+					<p>總分最高的玩家獲勝！若平手時，平手玩家中地圖上村民和村落總數最多的人獲勝。</p>
+				{{/9}}				
+			{{/7.I}}
+			{{#8.I}}
+				{{^4}}
+					{{#9.II}}
+						<p>當一輪結束時，至少一家公司有4 棟或以上交易所且擁有至少5 份貨物時，遊戲結束。</p>
+					{{/9.II}}
+					{{^9.II}}
+						<p>在一輪結束（所有玩家都進行完一回合）後，請檢查每位玩家的交易所數。依據玩家人數，當有人擁有指定數量或以上的交易所且擁有至少5 份貨物時，遊戲在該輪結束時結束： 8 (2♟)， 7 (3♟) 或 6 (4♟) 棟交易所及至少5 份貨物。</p>
+					{{/9.II}}
+				{{/4}}
+				{{#4}}
+					{{#9.II}}
+						<p>當一輪結束時，至少一家公司有3 棟或以上交易所且擁有至少5 份貨物時，遊戲結束。</p>
+					{{/9.II}}
+					{{^9.II}}
+						<p>在一輪結束（所有玩家都進行完一回合）後，請檢查每位玩家的交易所數。依據玩家人數，當有人擁有指定數量或以上的交易所且擁有至少5 份貨物時，遊戲在該輪結束時結束： 6 (2♟)， 5 (3♟) 或 4 (4♟) 棟交易所及至少5 份貨物。</p>
+					{{/9.II}}
+				{{/4}}
+			{{/8.I}}
+			{{#9.I}}<p>遊戲在5個公司輪後結束。所有公司發放最後一次股利及支付維持費用！</p>{{/9.I}}
+		</div>
+	</div>
+
+	{{#capture}}
+		{{#9}}
+			{{#9.II}}
+				<p>玩家計算所有5家公司的分數。</p> 
+			{{/9.II}}
+			{{#9.III}}
+				<p>玩家計算公司的分數。</p> 
+			{{/9.III}}
+			{{#1.I}}
+				<p>公司因她所送達的貨物獲得分數，見左面<b>分數</b>表格。</p>
+			{{/1.I}}
+			{{#2.I}}
+				<p>公司依據她在城市牌上的村民數得分，見<b>最終計分</b>表格及範例。</p>
+				{{^residents}}<p>在公司的貨車行經最後一座城市後，她每多花1 行動點繼續前行，都帶給她額外1 分。</p>{{/residents}}
+			{{/2.I}}
+			{{#3.I}}
+				<p>公司藉由興建工廠及購買特權牌來獲得分數。</p>
+			{{/3.I}}
+			{{#4.I}}
+				<p>公司依據控制的板塊進行計分：她的每座城市得5 分，每片其他的陸地板塊得3 分。</p>
+			{{/4.I}}
+			{{#5.I}}
+				<p>公司藉由探索新的區域、放置村落與收成行動來獲得分數。</p>
+			{{/5.I}}
+			{{#6.I}}
+				<p>依據公司在地形計算板上每種地形的數量得分，見<b>最終計分</b>表格及範例。</p>
+			{{/6.I}}
+			{{#7.I}}
+				<p>公司在遊戲中翻開計分牌時得分。</p>
+			{{/7.I}}
+			{{#8.I}}
+				<p>公司從{{#1}}她的交易所上面{{/1}}{{^1}}公司資產上面{{/1}}拿取貨物，然後每個交易所可以令{{#4}}2件貨物{{/4}}{{^4}}1件貨物{{/4}}計分{{^4}}（首都的總部可以計算2件貨物）{{/4}}。公司從貨物計分得到分數，見<b>最終計分</b>的表格及範例。在計分之前，公司可以將任意2 份貨物（2 份相同或不同的貨物皆可），換成1份任意貨物，以便獲取更高分數。</p>
+				<p>公司為她的每個交易所獲得2分。</p>
+			{{/8.I}}
+			{{#7.III}}
+				<p>公司在最終計分時，按地形計算板得到{{^9.I}}額外{{/9.I}}分數，見<b>最終計分</b>表格及範例。</p>
+			{{/7.III}}
+			{{#9.I}}
+				<p>玩家計算他們的財富： 所有人將手上持股依現價兌換為現金（總裁股視為兩張）。 {{#7.III}}公司每有1 分，股價便上漲$1。{{/7.III}}</p>
+				<p>現金最多的玩家獲勝！平手時，所有平手玩家共享勝利。</p>
+			{{/9.I}}
+			{{#9.II}}
+				<p>表現最佳的公司（有最多分數）得到額外分數，見<b>最終計分時的額外分數</b>。</p>
+				<p>對於每個公司，玩家每持有一股（總裁股視為兩股），他便獲得等同於該公司總分的分數。</p>
+				<p>總分最高的玩家獲勝！平手時，所有平手玩家共享勝利。</p>
+			{{/9.II}}
+			{{#9.III}}
+				<p>表現最佳的公司（有最多分數）得到額外分數，見<b>最終計分時的額外分數</b>。</p>
+				<p>對於每個公司，玩家每持有一股（不計算總裁股），他便獲得等同於該公司總分的分數。</p>
+				<p>總分最高的玩家獲勝！平手時，所有平手玩家共享勝利。</p>
+			{{/9.III}}
+		{{/9}}
+		{{^9}}
+			{{#1.I}}
+				<p>玩家因他所送達的貨物獲得分數，見左面<b>分數</b>表格。</p>
+				{{#7.III}}
+					<p>玩家在最終計分時，按地形計算板得到{{^9.I}}額外{{/9.I}}分數，見<b>最終計分</b>表格及範例。</p>
+				{{/7.III}}
+				<p>總分最高的玩家獲勝！平手時，平手玩家當中，貨車貨艙裡有最多貨物獲勝。如果依然平手，最後一輪收入最多的玩家獲勝。</p>
+			{{/1.I}}
+			{{#2.I}}
+				<p>玩家依據他在城市牌上的村民數得分，見<b>最終計分</b>表格及範例。</p>
+				{{#7.III}}
+					<p>玩家在最終計分時，按地形計算板得到額外分數，見<b>最終計分</b>表格及範例。</p>
+				{{/7.III}}
+				{{^residents}}<p>在玩家的貨車行經最後一座城市後，他每多花1 行動點繼續前行，都帶給他額外1 分。總分最高的玩家獲勝。平手時，所有平手玩家共享勝利。</p>{{/residents}}
+				{{#residents}}<p>總分最高的玩家獲勝！平手時，平手玩家當中，於地圖上有最多村民及村落獲勝。</p>{{/residents}}
+			{{/2.I}}
+			{{#3.I}}
+				<p>玩家藉由興建工廠及購買特權牌來獲得分數。</p>
+				{{#7.III}}
+					<p>玩家在最終計分時，按地形計算板得到額外分數，見<b>最終計分</b>表格及範例。</p>
+				{{/7.III}}
+				<p>總分最高的玩家獲勝！平手時，平手玩家當中現金最多的玩家獲勝。</p>
+			{{/3.I}}
+			{{#4.I}}
+				<p>玩家依據控制的板塊進行計分：他的每座城市得5 分，每片其他的陸地板塊得3 分。</p>
+				{{#7.III}}
+					<p>玩家在最終計分時，按地形計算板得到額外分數，見<b>最終計分</b>表格及範例。</p>
+				{{/7.III}}
+				<p>總分最高的玩家獲勝！平手時，平手玩家當中，於地圖上有最多部隊獲勝。</p>
+			{{/4.I}}
+			{{#5.I}}
+				<p>玩家藉由探索新的區域、放置村落與收成行動來獲得分數。</p>
+				{{#7.III}}
+					<p>玩家在最終計分時，按地形計算板得到額外分數，見<b>最終計分</b>表格及範例。</p>
+				{{/7.III}}
+				<p>總分最高的玩家獲勝！平手時，平手玩家當中，於地圖上有最多村民（不計算村落）獲勝。</p>
+			{{/5.I}}
+			{{#6.I}}
+				<p>依據公司在地形計算板上每種地形的數量得分，見<b>最終計分</b>表格及範例。</p>
+				{{#7.III}}
+					<p>玩家在最終計分時，按地形計算板得到額外分數，見<b>最終計分</b>表格及範例。</p>
+				{{/7.III}}
+				<p>總分最高的玩家獲勝。 {{#4}}平手時，平手玩家當中，能用中立道路連接最多村民的玩家獲勝。{{/4}}{{^4}}平手時，平手玩家當中，能用自己道路連接最多村民的玩家獲勝。{{/4}}</p>
+			{{/6.I}}
+			{{#8.I}}
+				<p>玩家從{{#1}}他的交易所上面{{/1}}{{^1}}他面前{{/1}}拿取貨物，然後每個交易所可以令{{#4}}2件貨物{{/4}}{{^4}}1件貨物{{/4}}計分{{^4}} （首都的總部可以計算2件貨物）{{/4}}。玩家從貨物計分得到分數，見<b>最終計分</b>的表格及範例。在計分之前，玩家可以將任意2 份貨物（2 份相同或不同的貨物皆可），換成1份任意貨物，以便獲取更高分數。</p>
+				<p>玩家為他的每個交易所獲得2分。</p>
+				{{#7.III}}
+					<p>玩家在最終計分時，按地形計算板得到額外分數，見<b>最終計分</b>表格及範例。</p>
+				{{/7.III}}
+				<p>總分最高的玩家獲勝！平手時，平手玩家當中，擁有最多製造所的玩家獲勝。</p>
+			{{/8.I}}
+		{{/9}}
+	{{/capture}}
+	{{#hascapture}}
+		<div class="row section">
+			<div class="col-md-2 col-xs-2 mod{{world.0}}"><h1>最終計分</h1></div>
+			<div class="col-md-10 col-xs-10">{{{captured}}}</div>
+		</div>
+	{{/hascapture}}
+	<div class="row section footer">
+		<div class="col-md-12"><p>這是一個為《504》桌遊而建立的喜好項目。建立者不為內容承擔任何責任，而且內容可能會有所變更而不予通知。</p><p>《504》的英文版規則版權屬於 2f-spiele。《504》的中文版規則版權屬於新天鵝堡桌上遊戲。部份中文規則由Tim（斗室桌遊）潤飾修改，以乎合語境。</p></div>
+	</div>
+	
+</script>
+<script>
+	function explorer_map(maps) {
+		for(var i = 0; i < maps.length; i++) {
+			if(maps[i].priority == 2 || maps[i].priority == 3) {
+				return {'value': 1};
+			}
+		}
+		return {'value': 4};
+	}
+
+	function randomizeWorlds () {
+		var states = { 'stateon': [], 'stateoff': [], 'statelock':[] };
+		var modules = [];
+		var premodules = [];
+		
+		$('.modules').find('button[class^=mod]').each( function () {
+			var classes = $(this).attr('class').split(' ');
+			states[classes[2]].push(classes[0].substring(3));
+		});
+		
+		$.map(states['statelock'], function(value, key) { modules.push(value);} );
+		
+		if(modules.length!=3) {
+			$.map(states['stateon'], function(value, key) { premodules.push(value);} );
+			premodules = shuffle(premodules, 3-modules.length);
+		}
+		
+		modules = shuffle($.merge(modules, premodules), 3);
+		update_world(modules[0] + modules[1] + modules[2]);
+	}
+
+	function setModuleSelect(newState) {
+		$('.modules').find('button[class^=mod]').each( function () {
+			$(this).removeClass('stateon').removeClass('statelock').removeClass('stateoff').addClass(newState);
+		});
+		$('.modules').find('div.locked').remove();
+		$('.modules').find('.statelock').append('<div class="locked"><span class="glyphicon glyphicon-lock" aria-hidden="true"></span></div>');
+		checkThree($('.modules').find('.statelock').length+$('.modules').find('.stateon').length);
+	}
+	
+	function toggleModuleSelect(module) {
+		var classes = $(module).attr('class').split(' ');
+		var newState = "";
+		var statelock = $('.modules').find('.statelock').length;
+		
+		switch(classes[2]) {
+			case "stateon": newState = statelock<3 ? "statelock":"stateoff"; break;
+			case "statelock": newState = "stateoff"; break;
+			case "stateoff": newState = "stateon"; break;
+			default: newState = "stateon";
+		}
+		
+		$('.modules').find('div.locked').remove();
+		$(module).removeClass('stateon').removeClass('statelock').removeClass('stateoff').addClass(newState);
+		
+		$('.modules').find('.statelock').append('<div class="locked"><span class="glyphicon glyphicon-lock" aria-hidden="true"></span></div>');
+
+		checkThree($('.modules').find('.statelock').length+$('.modules').find('.stateon').length);
+		changeModuleDescription(module);
+	}
+	
+	function changeModuleDescription(module) {
+		var classes = $(module).attr('class').split(' ');
+		var state = "";
+		$('.moduleDescription').html($(module).find('img').attr('title')+' ('+states_defs[classes[2]]+')');
+	}
+	
+	function togglePrintPrivileges() {
+		if($('#print-privileges').prop( "checked" )) {
+			$('.container.print-priv').removeClass('printoff');
+		} else {
+			$('.container.print-priv').addClass('printoff');
+		}
+		
+	}
+	
+	function checkThree(value) {
+		if(value>=3) {
+			$('.randomizer').prop('disabled', false).css("opacity", "1");;
+		} else {
+			$('.randomizer').prop('disabled', true).css("opacity", "0.2");;
+		}
+	}
+	
+	var world;
+	var modules;
+
+	var parts = {
+		'2': {'name': '貨物(goods)', 'max': 49},
+		'3': {'name': '覆蓋片(covering tokens)', 'max': 30},
+		'4': {'name': '城市牌(city cards)', 'max': 10},
+		'5': {'name': '價格標記(price token)', 'max': 1},
+		'6': {'name': '起始玩家牌(starting player card)', 'max': 1},
+		'8': {'name': '特權牌(privileges)', 'max': 66},
+		'10': {'name': '貨車(transport trolleys)', 'max': 5},
+		'11': {'name': '貨艙牌(cargo hold cards)', 'max': 5},
+		'12': {'name': '行動片(movement point tokens)', 'max': 10},
+		'13p': {'id': '13', 'name': '每名玩家的村落(settlements per player)', 'max': 30},
+		'13s': {'id': '13', 'name': '每間公司的村落(settlements per company)', 'max': 15},
+		'14p': {'id': '14', 'name': '每名玩家的村民(residents per player)', 'max': 30},
+		'14s': {'id': '14', 'name': '每間公司的村民(residents per company)', 'max': 15},
+		'15s': {'id': '15', 'name': '股票價格板(share value board)', 'max': 1},
+		'15g': {'id': '15', 'name': '貨物價格板(goods price board)', 'max': 1},
+		'16': {'name': '分數圓片(victory point tokens)', 'max': 100},
+		'17': {'name': '地形計算板(majority board)', 'max': 1},
+		'18': {'name': '地形計算標記(marking tokens)', 'max': 30},
+		'19': {'name': '工廠(factories)', 'max': 30},
+		'20': {'name': '順位牌(turn order cards)', 'max': 3},
+		'21': {'name': '骰子(dice)', 'max': 3},
+		'22': {'name': '民兵(militia)', 'max': 8},
+		'23': {'name': '兵營(barracks)', 'max': 8},
+		'24': {'name': '探險片(explorer tiles)', 'max': 6},
+		'25': {'name': '收入片(income tokens)', 'max': 29},
+		'26': {'name': '道路(roads)', 'max': 90},
+		'27': {'name': '玩家順位牌(starting cards)', 'max': 4},
+		'28': {'name': '計分牌(scoring cards)', 'max': 17},
+		'29': {'name': '製造所(plants)', 'max': 40},
+		'30': {'name': '股份公司板(stock company boards)', 'max': 5},
+		'31': {'name': '股價指示物(share value tokens)', 'max': 5},
+		'32': {'name': '股票(shares)', 'max': 45},
+		'33': {'name': '遊戲摘要(overview tile)', 'max': 2},
+		'36': {'name': '船(boat)', 'max': 1},
+	}
+	
+	var shares_defs = {
+		"company": {agent: '總裁', sagent: '總裁', owner: '公司', owners:'每間公司' , fowns: '公司的', owns: '她的', company: true},
+		"player": {agent: '玩家', sagent: '他', owner: '玩家', owners:'每位玩家',  fowns: '他的', owns: '他的', company: false}
+	}
+	
+	var states_defs = {
+		"stateon": "可用",
+		"stateoff": "停用",
+		"statelock": "使用"
+	}
+	
+	var privilege_defs = {
+		'I': {
+			'1': {allow:  ['4.I', '4.II', '5.I', '8.I', '8.II'], disallow: [] },
+			'2': {allow: ['2.I', '2.II', '4.II', '6.II', '7.II', '8.II', '9.I', '9.II'], disallow: [] },
+			'3': {allow: ['9.I', '9.II'], disallow: [] },
+			'4': {allow: ['4.I', '4.II'], disallow: [] },
+			'5': {allow: ['2.II', '3.II', '5.II', '8.II', '9.I', '9.II'], disallow: [] },
+			'6': {allow: ['1.II'], disallow: [] },
+			'7': {allow: ['9.I'], disallow: [] },
+			'8': {allow: ['1.I', '1.II'], disallow: [] },
+			'9': {allow: ['6.I', '6.II'], disallow: [] },
+			'10': {allow: ['5'], disallow: [] },
+			'11': {allow: ['all'], disallow: ['9.I'] },
+			'12': {allow: ['7.I', '7.II'], disallow: [] },
+		},
+		'II': {
+			'1': {allow: ['9.I'], disallow: [] },
+			'2': {allow: ['3.I', '3.II'], disallow: [] },
+			'3': {allow: ['3.II'], disallow: [] },
+			'4': {allow: ['residents'], disallow: [] },
+			'5': {allow: ['1'], disallow: [] },
+			'6': {allow: ['8.I', '8.II'], disallow: [] },
+			'7': {allow: ['1.I', '1.II', '4.I', '4.II', '6.I', '6.II', '8.I'], disallow: [] },
+			'8': {allow: ['6.I', '6.II'], disallow: [] },
+			'9': {allow: ['all'], disallow: ['9.I'] },
+			'10': {allow: ['7.I', '7.II'], disallow: [] },
+			'11': {allow: ['residents'], disallow: [] },
+			'12': {allow: ['2.II', '3.II', '5.II', '8.II', '9.I', '9.II'], disallow: [] },
+		},
+		'III': {
+			'1': {allow: ['1.I', '1.II'], disallow: [] },
+			'2': {allow: ['7.I', '7.II'], disallow: [] },
+			'3': {allow: ['7.I', '7.II'], disallow: [] },
+			'4': {allow: ['4.I', '4.II'], disallow: [] },
+			'5': {allow: ['4.II'], disallow: [] },
+			'6': {allow: ['all'], disallow: ['3.III', '9.I'] },
+			'7': {allow: ['3.I'], disallow: [] },
+			'8': {allow: ['8.I', '8.II'], disallow: [] },
+			'9': {allow: ['6.I', '6.II'], disallow: [] },
+		}
+			
+	}
+	
+	var module_defs = {
+		'1': {
+			'name': 'Pick up & Deliver',
+			'I': {
+				'residents': false,
+				'map': {'priority': 3, 'value': 3},
+				'order': {'priority': 4, 'clockwise': true},
+				'money': {'priority': 5, 'fixed': true, 'amount': 60},
+				'parts': {'2': 48, '3': 30, '10': 5, '11': 5, '12': 10, '33': 1},
+				'before_render': function(params, module) {
+					if(!params.residents) {
+						if(params.world[1] == '9') {
+							module['parts']['13s'] = 15;
+						} else {
+							module['parts']['13p'] = 20;
+						}
+					}
+				},
+			},
+			'II': {
+				'residents': false,
+				'map': {'priority': 3, 'value': 3},
+				'order': {'priority': 4, 'clockwise': true},
+				'money': {'priority': 5, 'fixed': true, 'amount': 60},
+				'parts': {'2': 48, '3': 30, '10': 5, '11': 5, '12': 10, '15g': 1, '33': 1},
+				'before_render': function(params, module) {
+					if(!params.residents) {
+						if(params.world[0] == '9') {
+							module['parts']['13s'] = 15;
+						} else {
+							module['parts']['13p'] = 20;
+						}
+					}
+				}
+			},
+			'III': {
+				'residents': false,
+				'map': {'priority': 4, 'value': 5},
+				'order': {'priority': 4, 'clockwise': true},
+				'money': {'priority': 6, 'increasing': true},
+				'parts': {'10': 5, '11': 5, '12': 10, '33': 1},
+				'before_render': function(params, module) {
+					if(!params.residents) {
+						if(params.world[0] == '9' || params.world[1] == '9') {
+							module['parts']['13s'] = 15;
+						} else {
+							module['parts']['13p'] = 20;
+						}
+					}
+				}
+			},
+		},
+		'2': {
+			'name': 'Race',
+			'I': {
+				'residents': false,
+				'map': {'priority': 4, 'value': 5},
+				'order': {'priority': 4, 'clockwise': true},
+				'money': {'priority': 6, 'increasing': true},
+				'parts': {'4': 10},
+				'before_render': function(params, module) {
+					if(!params.residents) {
+						module['parts']['14p'] = 9;
+					}
+				},
+			},
+			'II': {
+				'residents': false,
+				'map': {'priority': 4, 'value': 5},
+				'order': {'priority': 4, 'clockwise': true},
+				'money': {'priority': 6, 'increasing': true},
+				'parts': {'4': 10},
+				'before_render': function(params, module) {
+					if(!params.residents) {
+						module['parts']['14p'] = 9;
+					}
+				},
+			},
+			'III': {
+				'residents': false,
+				'map': {'priority': 4, 'value': 5},
+				'order': {'priority': 4, 'clockwise': true},
+				'money': {'priority': 6, 'increasing': true},
+				'parts': {'17': 1, '18': 30},
+				'before_render': function(params, module) {
+					switch(params.world[0]) {
+					case '1':
+						module['parts']['16'] = 25;
+						break;
+					case '3':
+						module['parts']['16'] = 20;
+						break;
+					case '4':
+						module['parts']['16'] = 52;
+						break;
+					case '5':
+						module['parts']['16'] = 30;
+						break;
+					case '6':
+						module['parts']['16'] = 30;
+						break;
+					case '7':
+						module['parts']['16'] = 30;
+						break;
+					case '8':
+						module['parts']['16'] = 25;
+						break;
+					}
+				},
+			},
+		},
+		'3': {
+			'name': 'Privileges',
+			'I': {
+				'residents': false,
+				'map': {'priority': 4, 'value': 5},
+				'order': {'priority': 1, 'income': true},
+				'money': {'priority': 2, 'fixed': true, 'amount': 90},
+				'parts': {'8': 66, '5': 1, '16': 100, '19': 30, '20': 3},
+			},
+			'II': {
+				'residents': false,
+				'map': {'priority': 3, 'value': 3},
+				'order': {'priority': 2, 'income': true},
+				'money': {'priority': 2, 'fixed': true, 'amount': 90},
+				'parts': {'8': 66, '5': 1, '19': 30, '20': 3},
+			},
+			'III': {
+				'residents': false,
+				'map': {'priority': 4, 'value': 5},
+				'order': {'priority': 4, 'clockwise': true},
+				'money': {'priority': 9, 'extra': true, 'amount': 20},
+				'parts': {'8': 66, '5': 1},
+			},
+		},
+		'4': {
+			'name': 'Military',
+			'I': {
+				'residents': true,
+				'map': {'priority': 2, 'value': 2},
+				'order': {'priority': 4, 'clockwise': true},
+				'money': {'priority': 4, 'fixed': true, 'amount': 80},
+				'parts': {'21': 3, '22': 8, '23': 8, '33': 1},
+			},
+			'II': {
+				'residents': true,
+				'map': {'priority': 2, 'value': 2},
+				'order': {'priority': 4, 'clockwise': true},
+				'money': {'priority': 5, 'fixed': true, 'amount': 60},
+				'parts': {'21': 3, '22': 8, '23': 8, '33': 1},
+			},
+			'III': {
+				'residents': true,
+				'map': {'priority': 2, 'value': 2},
+				'order': {'priority': 4, 'clockwise': true},
+				'money': {'priority': 5, 'fixed': true, 'amount': 60},
+				'parts': {'21': 3, '22': 8, '23': 8},
+			},
+		},
+		'5': {
+			'name': 'Exploring',
+			'I': {
+				'residents': true,
+				'map': {'priority': 1, 'func': explorer_map},
+				'order': {'priority': 4, 'clockwise': true},
+				'money': {'priority': 4, 'increasing': true},
+				'parts': {'24': 6, '21': 1, '16': 100},
+			},
+			'II': {
+				'residents': false,
+				'map': {'priority': 1, 'value': 1},
+				'order': {'priority': 4, 'clockwise': true},
+				'money': {'priority': 3, 'increasing': true},
+				'parts': {'24': 6, '21': 1, '25': 30},
+			},
+			'III': {
+				'residents': false,
+				'map': {'priority': 1, 'func': explorer_map},
+				'order': {'priority': 4, 'clockwise': true},
+				'money': {'priority': 4, 'increasing': true},
+				'parts': {'24': 6, '21': 1},
+			},
+		},
+		'6': {
+			'name': 'Roads',
+			'I': {
+				'residents': true,
+				'map': {'priority': 4, 'value': 5},
+				'order': {'priority': 4, 'clockwise': true},
+				'money': {'priority': 6, 'increasing': true},
+				'parts': {'26': 90, '17': 1, '18': 30, '33': 1},
+			},
+			'II': {
+				'residents': true,
+				'map': {'priority': 4, 'value': 5},
+				'order': {'priority': 4, 'clockwise': true},
+				'money': {'priority': 6, 'increasing': true},
+				'parts': {'26': 90, '17': 1, '18': 30, '33': 1},
+			},
+			'III': {
+				'residents': true,
+				'map': {'priority': 4, 'value': 5},
+				'order': {'priority': 4, 'clockwise': true},
+				'money': {'priority': 6, 'increasing': true},
+				'parts': {'26': 90, '33': 1},
+			},
+		},
+		'7': {
+			'name': 'Majorities',
+			'I': {
+				'residents': true,
+				'map': {'priority': 4, 'value': 5},
+				'order': {'priority': 1, 'vp': true},
+				'money': {'priority': 6, 'increasing': true},
+				'parts': {'27': 4, '28': 17, '16': 100, '17': 1, '18': 30},
+			},
+			'II': {
+				'residents': true,
+				'map': {'priority': 3, 'value': 3},
+				'order': {'priority': 4, 'clockwise': true},
+				'money': {'priority': 3, 'increasing': true},
+				'parts': {'17': 1, '18': 30},
+			},
+			'III': {
+				'residents': false,
+				'map': {'priority': 4, 'value': 5},
+				'order': {'priority': 4, 'clockwise': true},
+				'money': {'priority': 6, 'increasing': true},
+				'parts': {'17': 1, '18': 30},
+			},
+		},
+		'8': {
+			'name': 'Production',
+			'I': {
+				'residents': true,
+				'map': {'priority': 4, 'value': 5},
+				'order': {'priority': 4, 'clockwise': true},
+				'money': {'priority': 6, 'increasing': true},
+				'parts': {'2': 48, '29': 40, '33': 1},
+			},
+			'II': {
+				'residents': true,
+				'map': {'priority': 4, 'value': 5},
+				'order': {'priority': 4, 'clockwise': true},
+				'money': {'priority': 6, 'increasing': true},
+				'parts': {'2': 48, '29': 40, '33': 1},
+			},
+			'III': {
+				'residents': true,
+				'map': {'priority': 4, 'value': 5},
+				'order': {'priority': 4, 'clockwise': true},
+				'money': {'priority': 6, 'increasing': true},
+				'parts': {'29': 40, '33': 1},
+				'before_render': function(params, module) {
+					if(params.world.indexOf('1') != -1) {
+						module['parts']['2'] = '48';
+					}
+				},
+			},
+		},
+		'9': {
+			'name': 'Shares',
+			'I': {
+				'residents': false,
+				'map': {'priority': 9, 'value': 0},
+				'order': {'priority': 1, 'shares': true},
+				'money': {'priority': 1, 'shares': true},
+				'parts': {'30': 5, '15s': 1, '31': 5, '32': 45, '20': 3, '6': 1},
+			},
+			'II': {
+				'residents': false,
+				'map': {'priority': 9, 'value': 0},
+				'order': {'priority': 2, 'shares': true},
+				'money': {'priority': 1, 'shares': true},
+				'parts': {'30': 5, '15s': 1, '31': 5, '32': 45, '20': 3, '6': 1},
+			},
+			'III': {
+				'residents': false,
+				'map': {'priority': 9, 'value': 0},
+				'order': {'priority': 3, 'income': true},
+				'money': {'priority': 9},
+				'parts': {'15s': 1, '31': 5, '32': 45, '20': 3},
+			},
+		},
+	}
+
+	function priority_match(items) {
+		var best = items[0];
+		for(var i = items.length - 1; i >= 0; i--) {
+			if(items[i]['priority'] <= best['priority']) {
+				best = items[i];
+			}
+		}
+		if(best['func'] != undefined) {
+			return best['func'](items);
+		} else {
+			return best;
+		}
+	}
+	
+	function catchPrivileges(world) {
+		var cards = {};
+		var worldmapping = [world[0]+".I", world[1]+".II", world[2]+".III"];
+		var residents = false;
+		var counter = [];
+		cards['list'] = [];
+		
+		if (modules['I']['residents'] || modules['II']['residents'] || modules['III']['residents'] || world.indexOf('1') == -1) residents = true;
+		
+		$.map(privilege_defs, function(stepcards, step) {
+			cards[step] = {};
+			counter[step] = 0;
+			$.map(stepcards, function(value, key) {
+				var cardflag = false;
+				$.each(value['allow'], function (alval, alkey) {
+					if(worldmapping.indexOf(alkey)!=-1 || alkey=="all" || (alkey=="residents" && residents) || world.indexOf(alkey)!=-1 || world.indexOf(alkey)!=-1) {
+						cardflag=true;
+					}
+				});
+				$.each(value['disallow'], function (alval, alkey) {
+					if(worldmapping.indexOf(alkey)!=-1 || world.indexOf(alkey)!=-1) cardflag=false;
+				});
+				
+				if(cardflag) {
+					cards[step][key] = true;
+					cards['list'].push(step+" ("+key+")");
+					counter[step] += 1;
+				}
+			});
+			
+			if(counter[step] > 0) {
+				cards[step]['exists'] = true;
+			} else {
+				cards[step]['exists'] = false;
+			}
+		});
+
+		if(cards['list'].length > 0) {
+			var lastpriv = cards['list'].pop();
+			cards['list'] = cards['list'].join(", ");
+			cards['list'] += " 和 "+lastpriv;
+		}
+		
+		return cards
+	}
+	
+	function validate_world(worldno) {
+		var world = worldno.split('');
+		if (
+			world.length != 3
+			|| !world.every(function(x) {return x.length==1 && x > '0' && x <= '9'})
+			|| world[0] == world[1] || world[0] == world[2] || world[1] == world[2]) {
+			return null;
+		} else {
+			return world;
+		}
+	}
+
+	function update_world(worldno) {
+		if(validate_world(worldno) != null)
+			window.location.hash = "#" + worldno
+	}
+
+	function shuffle(arr, num) {
+		if(num == undefined) num = arr.length;
+		
+		for (var i = arr.length - 1; i > 0; i--) {
+			var j = Math.floor(Math.random() * (i + 1));
+			var temp = arr[i];
+			arr[i] = arr[j];
+			arr[j] = temp;
+		}
+		
+		arr = arr.slice(0,num);
+		return arr;
+		
+	}
+	
+	function getNameTokens(world) {
+		if(world.indexOf('9') == 1||world.indexOf('9') == 0) {
+			return "company";
+		}
+		return "player";
+	}
+	
+	function buildRules(template) {
+		
+		var capture_stack = [];
+		var params = {
+			'capture': function() {
+				return function(template, render) {
+					var rendered = render(template).trim();
+					if(rendered.length > 0)
+						capture_stack.push(rendered);
+					return '';
+				};
+			},
+			'hascapture': function() {
+				return function(template, render) {
+					if(capture_stack.length > 0) {
+						return render(template);
+					} else {
+						return '';
+					}
+				};
+			},
+			'captured': function() {
+				return capture_stack.pop();
+			},
+			'world': world,
+			'module': modules,
+			'residents': modules['I']['residents'] || modules['II']['residents'] || modules['III']['residents'] || world.indexOf('1') == -1,
+			'hurry': world.indexOf('2') != -1 || world.indexOf('8') != -1,
+			'map': priority_match([modules['I']['map'], modules['II']['map'], modules['III']['map']]),
+			'mapnum': {},
+			'order': priority_match([modules['I']['order'], modules['II']['order'], modules['III']['order']]),
+			'money': priority_match([modules['I']['money'], modules['II']['money'], modules['III']['money']]),
+			'agent': shares_defs[getNameTokens(world)]['agent'],
+			'sagent': shares_defs[getNameTokens(world)]['sagent'],
+			'owner':shares_defs[getNameTokens(world)]['owner'],
+			'owners':shares_defs[getNameTokens(world)]['owners'],
+			'fowns':shares_defs[getNameTokens(world)]['fowns'],
+			'owns':shares_defs[getNameTokens(world)]['owns'],
+			'company':shares_defs[getNameTokens(world)]['company'],
+			'priv': catchPrivileges(world),
+		};
+	
+		params[world[0]] = {'I': true};
+		params[world[1]] = {'II': true};
+		params[world[2]] = {'III': true};
+		params['mapnum'][params.map.value] = true;
+		params[world.join('')] = true;
+
+		// Run pre-render hooks and assemble the list of parts
+		var game_parts = {};
+		$.map(['I', 'II', 'III'], function(i) {
+			if(modules[i]['before_render'] != undefined)
+				modules[i]['before_render'](params, modules[i]);
+
+			$.map(modules[i]['parts'], function(value, key) {
+				game_parts[key] = Math.min(
+					(game_parts[key] || 0) + value,
+					parts[key]['max']);
+			});
+		});
+		var part_list = [];
+		$.map(game_parts, function(value, key) {
+			var partinfo = parts[key];
+			part_list.push({
+				'name': partinfo.name,
+				'id': partinfo.id==undefined?key:partinfo.id,
+				'count': value,
+			});
+		});
+		part_list.sort(function(a, b) {
+			return a['id'] - b['id'];
+		});
+		params['parts'] = part_list;
+        
+		params['long_name'] = Mustache.render($('#name-template').html(), params);
+        // Added by studenttwok to change language
+        var titleName = params['long_name'].replace(/[\n\r\t\s]/g, "");
+		$("title").text(titleName);
+		var rendered = Mustache.render(template, params);
+
+		return rendered;
+		
+	}
+	
+	function toggleMenu() {
+		if($("#menu").is(':hidden')) {
+			$("#menu").slideDown(100, function () {
+				$("body").css({ "padding-top": $("nav").outerHeight()+"px" });
+			});
+		} else {
+			$("#menu").slideUp(100);		
+			$("body").css({ "padding-top": "0px" });
+		}
+	}
+    
+    // Added by studenttwok to change language
+	function toggleLanguage() {
+		var thisLanguage = "cht";
+        if (thisLanguage == "cht") {
+            // check to en
+            window.location.href = "index.html#" + world[0] + world[1] + world[2];
+        } else {
+            // change to cht
+            window.location.href = "index_cht.html#" + world[0] + world[1] + world[2];
+        }
+	}    
+	
+	function load() {
+		
+		world = validate_world(window.location.hash.substr(1)) || ['1', '2', '3'];
+		
+		modules = {
+			'I': $.extend(true, {}, module_defs[world[0]]['I']),
+			'II': $.extend(true, {}, module_defs[world[1]]['II']),
+			'III': $.extend(true, {}, module_defs[world[2]]['III']),
+		};
+
+		var pageSections = ['head','setup','privileges','examples','phase12','phase3abcd','phase3efgh','scoring'];
+		$.each(pageSections, function(index, value) {
+			$('#target-' + value).html(buildRules($('#template-' + value).html()));
+		});
+		
+		var tmp = $('#template-privileges').html();
+		tmp = tmp.replace(/ col-xs-12/g, ' col-xs-6');
+		
+		$('#target-privileges-print').html(buildRules(tmp));
+		
+		
+		$("#worldno").click(function() {
+			$("#worldno-entry, #worldno").toggle();
+
+			var entry = $("#worldno-entry");
+			if(entry.is(":visible")) {
+				entry.val(window.location.hash.substr(1))
+					.focus()
+					.select();
+			} else {
+				update_world($("#worldno-entry").val());
+			}
+		});
+
+		$("#worldno-entry").on("keypress", function(event) {
+			if(event.which == 13) {
+				update_world($("#worldno-entry").val());
+				$("#worldno-entry, #worldno").toggle();
+			}
+		}).blur(function() {
+			update_world($("#worldno-entry").val());
+			$("#worldno-entry, #worldno").toggle();
+		});
+		
+		$('#menuToggle').on('click', function (e) { toggleMenu(); });
+		$('#printicon').on('click', function (e) { window.print(); });
+		$('div.randomizer').on('click', function (e) { randomizeWorlds(); });
+        // Added by studenttwok to change language
+		$('#languageToggle').on('click', function (e) { toggleLanguage(); });
+
+	}
+	
+	$(function() { 
+		$('#selectall').on('click', function (e) { setModuleSelect('stateon'); });
+		$('#selectnone').on('click', function (e) { setModuleSelect('stateoff'); });
+		$('button.randomizer').on('click', function (e) { randomizeWorlds(); });
+		$('#print-privileges').on('click', function (e) { togglePrintPrivileges(); });
+		
+		$('.modules').find('button[class^=mod]').each( function () {
+			$(this).on('click', function (e) { toggleModuleSelect(this); });
+			$(this).on('mouseover', function (e) { changeModuleDescription(this); });
+		});
+		
+	});
+
+	
+	$(document).ready(load);
+	$(window).bind('hashchange', load);
+	$(window).bind('beforeprint', function() { $("#menu").slideUp(0); }); //didn't work in chrome
+	
+</script>
+<script>
+	// Via http://stackoverflow.com/questions/12556593/determining-a-page-is-outdated-on-github-pages
+	// Check if a new cache is available on page load.
+
+	window.addEventListener('load', function(e) {
+		var appCache = window.applicationCache;
+
+		if ( !appCache ) {
+			return;
+		}
+
+		appCache.addEventListener('updateready', function(e) {
+			if (appCache.status === appCache.UPDATEREADY) {
+				// Browser downloaded a new app cache.
+				// Swap it in and reload the page to get the new hotness.
+				appCache.swapCache();
+				window.location.reload();
+			}
+		}, false);
+	}, false);
+
+
+</script>
+
+</body>
+</html>
