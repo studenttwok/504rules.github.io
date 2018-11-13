@@ -8,4 +8,4 @@
 
 特別感謝原作者製作程式，及新天鵝堡的支持。
 
-https://504rulesCHT.github.io/
+https://studenttwok.github.io/504rulesCHT.github.io/index_cht.html
